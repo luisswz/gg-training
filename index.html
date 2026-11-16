@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="GG-Training">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Grundgesetz-Training – Kurzarbeit PuG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Literata:opsz,wght@7..72,500;7..72,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f6f4ee; --grid:rgba(42,60,122,.055); --sheet:#fffdf8; --ink:#1b2340; --muted:#626a86; --line:#e4e1d8;
+  --marker:#ff9fb6; --marker-soft:#ffe6ec; --navy:#2a3c7a; --navy-ink:#fffdf8; --ok:#1f7a4f; --ok-soft:#dff2e7;
+  --bad:#bf2443; --bad-soft:#fde3e8; --mid:#a86f00; --mid-soft:#fbf0d4; --yellow:#fff2b3; --tabbg:rgba(255,253,248,.88);
+  --shadow:0 1px 2px rgba(27,35,64,.05),0 10px 30px -12px rgba(27,35,64,.16);
+  --serif:"Literata", Georgia, "Times New Roman", serif;
+  --sans:"Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color-scheme:light; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0f1320; --grid:rgba(255,255,255,.03); --sheet:#171d2e; --ink:#eceef6; --muted:#a2a9c4; --line:#283049;
+    --marker:#c4486c; --marker-soft:#3a1f2c; --navy:#a9b9f5; --navy-ink:#0f1320; --ok:#62d6a0; --ok-soft:#163626;
+    --bad:#ff8ea2; --bad-soft:#3d1d27; --mid:#f2c454; --mid-soft:#382e14; --yellow:#40370f; --tabbg:rgba(23,29,46,.86);
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px -14px rgba(0,0,0,.6);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0f1320; --grid:rgba(255,255,255,.03); --sheet:#171d2e; --ink:#eceef6; --muted:#a2a9c4; --line:#283049;
+  --marker:#c4486c; --marker-soft:#3a1f2c; --navy:#a9b9f5; --navy-ink:#0f1320; --ok:#62d6a0; --ok-soft:#163626;
+  --bad:#ff8ea2; --bad-soft:#3d1d27; --mid:#f2c454; --mid-soft:#382e14; --yellow:#40370f; --tabbg:rgba(23,29,46,.86);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px -14px rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-text-size-adjust:100%;
+  background-color:var(--paper);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:22px 22px}
+.wrap{max-width:780px;margin:0 auto;padding:14px 18px 140px}
+h1,h2,h3{font-family:var(--serif);line-height:1.2;margin:0;letter-spacing:-.01em}
+h2{font-size:1.5rem;margin:30px 0 12px}
+h3{font-size:1.1rem;margin:18px 0 6px}
+p{margin:0 0 10px}
+a{color:inherit}
+.mk{background:linear-gradient(transparent 55%,var(--marker) 55%,var(--marker) 90%,transparent 90%);padding:0 2px}
+/* Kopf */
+.brand{display:flex;align-items:center;gap:12px;padding:6px 0 16px}
+.brand .logo{width:42px;height:42px;border-radius:13px;background:var(--navy);color:var(--navy-ink);display:grid;place-items:center;font-family:var(--serif);font-size:1.5rem;font-weight:700;box-shadow:var(--shadow);transform:rotate(-4deg)}
+.brand b{font-family:var(--serif);font-size:1.15rem;display:block;line-height:1.1}
+.brand span{font-size:.82rem;color:var(--muted)}
+.view{display:none}.js .view.on{display:block;animation:fade .35s ease-out}.js .static{display:none}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.view>h2:first-child{margin-top:4px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 12px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--sheet);color:var(--ink);border-radius:999px;padding:8px 14px;font:inherit;font-size:.9rem;cursor:pointer;transition:background .2s,color .2s}
+.chip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:var(--navy-ink)}
+button{font:inherit}
+.btn{border:0;border-radius:999px;padding:11px 18px;font-weight:700;cursor:pointer;background:var(--navy);color:var(--navy-ink);transition:transform .15s,opacity .2s;text-decoration:none;display:inline-block}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.ok{background:var(--ok);color:var(--navy-ink)}
+.btn.bad{background:var(--bad);color:var(--navy-ink)}
+.btn.sm{padding:8px 14px;font-size:.9rem}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.sheet{background:var(--sheet);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow)}
+:focus-visible{outline:3px solid var(--marker);outline-offset:2px}
+.muted{color:var(--muted);font-size:.92rem}
+.small{font-size:.85rem}
+.law{font-family:var(--serif);border-left:4px solid var(--marker);padding:6px 0 6px 14px;margin:12px 0;line-height:1.65;font-style:italic}
+.tip{background:var(--marker-soft);border-radius:14px;padding:12px 16px;margin:12px 0;font-size:.95rem}
+.warn{background:var(--yellow);border-radius:14px;padding:12px 16px;margin:12px 0;font-size:.95rem}
+.tbl{overflow-x:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.92rem;min-width:400px}
+th,td{border-bottom:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+th{font-weight:700;color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+.sw{display:inline-block;width:14px;height:14px;border-radius:4px;vertical-align:-2px;margin-right:6px}
+ul.plain{padding-left:20px;margin:6px 0 10px}ul.plain li{margin:4px 0}
+/* Hero */
+.hero{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center;background:var(--sheet);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero::after{content:"§";position:absolute;right:-8px;bottom:-46px;font-family:var(--serif);font-size:11rem;line-height:1;color:var(--marker-soft);pointer-events:none;z-index:0}
+.hero>*{position:relative;z-index:1}
+.ring{position:relative;width:136px;height:136px}
+.ring svg{transform:rotate(-90deg)}
+.ring .bg{stroke:var(--line)}
+.ring .fg{transition:stroke-dashoffset 1s cubic-bezier(.3,.7,.3,1),stroke .3s}
+.ring .val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .val b{font-family:var(--serif);font-size:2.4rem;line-height:1}
+.ring .val span{font-size:.78rem;color:var(--muted)}
+.hero h1{font-size:clamp(1.4rem,4.5vw,1.8rem)}
+.hero .verdict{margin:8px 0 0;color:var(--muted)}
+.kpill{display:inline-block;background:var(--marker-soft);color:var(--ink);border-radius:999px;padding:4px 12px;font-size:.82rem;font-weight:700;margin-bottom:8px}
+.persona{margin-top:12px;font-size:.85rem}
+.persona summary{cursor:pointer;color:var(--muted);list-style:none}
+.persona summary::-webkit-details-marker{display:none}
+.persona .f{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.persona input{font:inherit;font-size:.92rem;padding:7px 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--paper);color:var(--ink)}
+@media (max-width:460px){.hero{grid-template-columns:1fr;justify-items:center;text-align:center}.persona .f{justify-content:center}}
+.counts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0 4px}
+.count{background:var(--sheet);border:1px solid var(--line);border-radius:16px;padding:12px 8px;text-align:center;box-shadow:var(--shadow)}
+.count b{display:block;font-family:var(--serif);font-size:1.3rem}
+.count span{font-size:.75rem;color:var(--muted);line-height:1.2;display:block}
+@media (max-width:460px){.counts{grid-template-columns:repeat(2,1fr)}}
+.next{display:grid;gap:10px}
+.nx{display:flex;align-items:center;gap:14px;background:var(--sheet);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:16px;padding:13px 16px;color:var(--ink);text-align:left;cursor:pointer;width:100%;transition:transform .15s}
+.nx:hover{transform:translateY(-1px)}
+.nx .n{font-family:var(--serif);font-weight:700;flex:none;width:30px;height:30px;border-radius:50%;background:var(--marker-soft);display:flex;align-items:center;justify-content:center}
+.nx small{display:block;color:var(--muted)}
+.nx .go{margin-left:auto;font-weight:700;flex:none;color:var(--navy)}
+/* Themen */
+.topic{background:var(--sheet);border:1px solid var(--line);border-radius:18px;margin-bottom:12px;overflow:hidden;box-shadow:var(--shadow)}
+.topic>button.th{display:grid;grid-template-columns:auto 1fr auto;gap:6px 14px;align-items:center;width:100%;border:0;background:none;color:var(--ink);text-align:left;padding:16px 18px;cursor:pointer}
+.th .no{grid-row:span 3;align-self:start;font-family:var(--serif);font-weight:700;font-size:.95rem;width:36px;height:36px;border-radius:11px;background:var(--marker-soft);display:grid;place-items:center}
+.th .nm{font-family:var(--serif);font-weight:700;font-size:1.08rem}
+.th .pc{font-family:var(--serif);font-weight:700;font-size:1.1rem;text-align:right}
+.th .sub{grid-column:2/-1;display:flex;gap:10px;align-items:center;font-size:.82rem;color:var(--muted);flex-wrap:wrap}
+.pill{border-radius:999px;padding:2px 10px;font-size:.75rem;font-weight:700}
+.pill.lo{background:var(--bad-soft);color:var(--bad)}.pill.md{background:var(--mid-soft);color:var(--mid)}.pill.hi{background:var(--ok-soft);color:var(--ok)}
+.bar{grid-column:2/-1;height:7px;background:var(--line);border-radius:7px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:7px;transition:width .6s}
+.parts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:2px 0 16px}
+.part{font-size:.78rem;color:var(--muted)}
+.part .mini{height:5px;background:var(--line);border-radius:5px;margin-top:5px;overflow:hidden}
+.part .mini i{display:block;height:100%;background:var(--navy)}
+.tb{display:none;padding:0 18px 18px;border-top:1px solid var(--line)}
+.topic.open .tb{display:block;padding-top:16px;animation:fade .3s ease-out}
+.kurz{font-family:var(--serif);font-size:1.05rem;line-height:1.65}
+.check label{display:flex;gap:12px;align-items:flex-start;padding:9px 10px;border-radius:12px;cursor:pointer}
+.check label:hover{background:var(--paper)}
+.check input{width:20px;height:20px;margin-top:2px;flex:none;accent-color:var(--ok)}
+.check input:checked+span{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--ok)}
+details.more{margin-top:14px;border:1px solid var(--line);border-radius:14px;background:var(--sheet)}
+details.more>summary{cursor:pointer;padding:11px 14px;font-weight:700;list-style:none}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary::before{content:"▸ ";color:var(--muted)}
+details.more[open]>summary::before{content:"▾ "}
+details.more .in{padding:0 14px 12px}
+.mc{background:var(--paper);border-radius:16px;padding:14px;margin-top:12px}
+.reset{margin-top:28px;text-align:center}
+/* Medien */
+.media{background:var(--sheet);border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.media .tag{display:inline-block;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);background:var(--marker-soft);border-radius:999px;padding:3px 10px;margin-bottom:8px}
+.media h3{margin:0 0 6px;font-size:1.25rem}
+.media audio{width:100%;margin-top:10px}
+.media video{width:100%;border-radius:14px;margin-top:10px;background:#000;aspect-ratio:16/9}
+.speed{display:flex;gap:6px;margin-top:10px}
+.missing{display:none;background:var(--paper);border:1.5px dashed var(--line);border-radius:14px;padding:16px;margin-top:10px;text-align:center}
+.media.none audio,.media.none video,.media.none .speed{display:none}
+.media.none .missing{display:block}
+.done{color:var(--ok);font-weight:700;font-size:.88rem;margin-left:6px}
+/* Karten */
+.card{perspective:1200px;cursor:pointer;margin:8px 0 16px;min-height:260px}
+.card-in{position:relative;min-height:260px;transition:transform .5s cubic-bezier(.3,.7,.3,1);transform-style:preserve-3d}
+.card.flip .card-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--sheet);border:1px solid var(--line);border-radius:22px;padding:24px;display:flex;flex-direction:column;justify-content:center;overflow:auto;box-shadow:var(--shadow)}
+.face.back{transform:rotateY(180deg);justify-content:flex-start;background:linear-gradient(var(--marker-soft),var(--sheet) 60%)}
+.face .cat{color:var(--muted);font-size:.8rem;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em}
+.face .q{font-family:var(--serif);font-size:1.35rem;font-weight:700;line-height:1.3}
+.face .hint{color:var(--muted);font-size:.85rem;margin-top:auto;padding-top:14px}
+.progress{height:6px;background:var(--line);border-radius:6px;overflow:hidden;margin:6px 0 4px}
+.progress i{display:block;height:100%;background:var(--navy);width:0;transition:width .3s}
+/* Quiz */
+.opts{display:grid;gap:10px;margin:16px 0}
+.opt{text-align:left;border:1.5px solid var(--line);background:var(--sheet);color:var(--ink);border-radius:14px;padding:13px 15px;cursor:pointer;font-size:1rem;line-height:1.35;transition:border-color .2s}
+.opt:hover:not(:disabled){border-color:var(--navy)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--ok);background:linear-gradient(90deg,var(--ok-soft) 0 100%) no-repeat left/0% 100%;animation:sweep .5s ease-out forwards}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+@keyframes sweep{to{background-size:100% 100%}}
+@media (prefers-reduced-motion:reduce){.opt.right{animation:none;background-size:100% 100%}.card-in,.ring .fg,.bar i{transition:none}.js .view.on,.topic.open .tb{animation:none}}
+.expl{border-left:4px solid var(--marker);padding:4px 0 4px 12px;margin:6px 0 14px;font-size:.96rem}
+.qhead{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:.88rem}
+.qtext{font-family:var(--serif);font-size:1.25rem;font-weight:700;margin-top:6px;line-height:1.3}
+.big{font-family:var(--serif);font-size:3.2rem;font-weight:700}
+.review div{padding:10px 0;border-bottom:1px solid var(--line);font-size:.95rem}
+/* Probe */
+.task{background:var(--sheet);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.task .th2{display:flex;justify-content:space-between;gap:10px;font-weight:700}
+.task .pts{flex:none;color:var(--muted);font-weight:400}
+.task .hint{display:none;background:var(--mid-soft);border-radius:12px;padding:9px 12px;margin-top:10px;font-size:.93rem}
+.task.hint-on .hint{display:block}
+textarea{width:100%;min-height:110px;margin-top:10px;border:1.5px solid var(--line);border-radius:14px;padding:12px;background:var(--paper);color:var(--ink);font:inherit;font-size:1rem;resize:vertical}
+.sol{display:none;margin-top:12px;border-top:1px dashed var(--line);padding-top:12px}
+.task.show .sol{display:block}
+.eh label{display:flex;gap:10px;align-items:flex-start;padding:5px 0;cursor:pointer}
+.eh input{margin-top:5px;width:18px;height:18px;flex:none;accent-color:var(--ok)}
+.eh .p{color:var(--muted);flex:none;margin-left:auto;font-size:.88rem}
+.model{background:var(--paper);border-radius:12px;padding:12px 14px;margin-top:10px;font-size:.95rem}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:1.15rem}
+.result{position:sticky;bottom:calc(96px + env(safe-area-inset-bottom,0px));background:var(--navy);color:var(--navy-ink);border-radius:18px;padding:13px 18px;display:none;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;box-shadow:var(--shadow)}
+.result.on{display:flex}
+/* Navigation */
+nav.tabs{display:none;position:fixed;left:0;right:0;bottom:0;padding:0 12px calc(12px + env(safe-area-inset-bottom,0px));z-index:20;pointer-events:none}
+.js nav.tabs{display:block}
+nav.tabs .in{pointer-events:auto;max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr);gap:2px;padding:6px;border-radius:22px;background:var(--tabbg);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:0 12px 32px -10px rgba(27,35,64,.35)}
+nav.tabs a{display:flex;flex-direction:column;align-items:center;gap:1px;text-decoration:none;color:var(--muted);font-size:.7rem;padding:6px 2px;border-radius:16px;transition:background .2s,color .2s}
+nav.tabs a .ic{font-family:var(--serif);font-size:1.2rem;line-height:1.15}
+nav.tabs a[aria-current="page"]{color:var(--ink);background:var(--marker-soft);font-weight:700}
+.static details>summary{cursor:pointer}
+.static h2{margin-top:30px}
+footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:34px}
+.profbar{margin-top:12px}
+.profpanel{margin-top:10px;background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px;text-align:left}
+.plist{display:grid;gap:6px;margin:8px 0 12px}
+.prow{display:flex;align-items:center;gap:8px;background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:6px 6px 6px 12px}
+.prow.on{border-color:var(--navy)}
+.prow .pn{flex:1;background:none;border:0;color:var(--ink);text-align:left;cursor:pointer;padding:4px 0;font-weight:700}
+.prow .pn small{display:block;font-weight:400;color:var(--muted)}
+.prow .x{background:none;border:0;color:var(--muted);cursor:pointer;font-size:1.1rem;padding:4px 8px;border-radius:8px}
+.profpanel .f{display:flex;gap:10px;flex-wrap:wrap}
+.profpanel label{display:flex;flex-direction:column;gap:3px}
+.profpanel input[type=text],.profpanel input:not([type]),.profpanel input[type=date]{font:inherit;font-size:.92rem;padding:7px 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--sheet);color:var(--ink)}
+.resume{font-size:.88rem;color:var(--navy);font-weight:700;margin:8px 0 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="brand"><div class="logo" aria-hidden="true">§</div><div><b>Grundgesetz-Training</b><span>Politik und Gesellschaft, FOS 12 Bayern</span></div></header>
+<main>
+<div class="static">
+<div class="tip"><b>Lese-Version.</b> Hier steht der komplette Stoff zum Durchlesen. Quiz, Fortschritt, Karten zum Umdrehen und Timer laufen, sobald du die Datei in einem Browser wie Safari oder Chrome öffnest.</div>
+<h2>Hören &amp; Sehen</h2><div class="media"><span class="tag">Podcast</span><h3>Die Kurzarbeit zum Mithören</h3><audio controls preload="metadata"><source src="podcast.m4a" type="audio/mp4"><source src="podcast.mp3" type="audio/mpeg"><source src="podcast.wav" type="audio/wav"></audio></div><div class="media"><span class="tag">Video</span><h3>Video-Überblick</h3><video controls playsinline preload="metadata"><source src="video.mp4" type="video/mp4"></video></div><h2>Lernzettel</h2><section class="sheet" style="margin-bottom:14px"><h3 style="margin-top:0">Grundgesetz & Werte</h3><p class="kurz">Das Grundgesetz (in Kraft seit 24.05.1949) stellt die Menschenwürde in Art. 1 an die Spitze. Art. 20 legt die fünf Strukturprinzipien fest, Art. 79 regelt, wie man die Verfassung ändern darf und was nie geändert werden darf.</p><p><b>Das musst du morgen können:</b></p><ul class="plain"><li>☐ Art. 1: Menschenwürde, Grundrechte binden alle drei Gewalten</li><li>☐ Die 5 Strukturprinzipien aus Art. 20 nennen</li><li>☐ Art. 79: Änderung nur mit 2/3 in Bundestag und Bundesrat</li><li>☐ Ewigkeitsklausel Art. 79 Abs. 3 erklären</li><li>☐ Formaler vs. materieller Rechtsstaat</li></ul><details class="more"><summary>Ausführlich nachlesen</summary><div class="in"><p>Erarbeitet vom <b>Parlamentarischen Rat</b> in Bonn, verkündet 23.05.1949, in Kraft 24.05.1949, seit 03.10.1990 für ganz Deutschland. <b>Wertgebunden</b>: Bestimmte Werte stehen über jeder Mehrheitsentscheidung.</p>
+<div class="law">Art. 1 Abs. 1 GG: Die Würde des Menschen ist unantastbar. Sie zu achten und zu schützen ist Verpflichtung aller staatlichen Gewalt.</div>
+<div class="tbl"><table><tr><th>Prinzip (Art. 20)</th><th>Kern</th></tr>
+<tr><td>Demokratie</td><td>Alle Staatsgewalt geht vom Volke aus (Abs. 2), repräsentative Demokratie</td></tr>
+<tr><td>Rechtsstaat</td><td>Bindung an Gesetz und Recht, Gewaltenteilung, unabhängige Gerichte (Abs. 2, 3)</td></tr>
+<tr><td>Sozialstaat</td><td>soziale Gerechtigkeit, Existenzminimum</td></tr>
+<tr><td>Bundesstaat</td><td>Bund und 16 Länder</td></tr>
+<tr><td>Republik</td><td>Staatsoberhaupt auf Zeit gewählt</td></tr></table></div>
+<p><b>Formaler Rechtsstaat:</b> Gesetze sind formal korrekt zustande gekommen. <b>Materieller Rechtsstaat:</b> Gesetze müssen auch inhaltlich der Verfassung und den Menschenrechten entsprechen, Schutz vor „legalem Unrecht“.</p>
+<p><b>Art. 79:</b> Abs. 2 verlangt 2/3 der Mitglieder des Bundestages und 2/3 der Stimmen des Bundesrates. Abs. 3 (Ewigkeitsklausel) verbietet Änderungen an der Gliederung in Länder, der Mitwirkung der Länder an der Gesetzgebung und an den Grundsätzen der Art. 1 und 20.</p>
+<div class="tip">Karikatur im Heft: Der Bundesadler (Art. 79 III) schützt die Eier „Art. 1“ und „Art. 20“ vor der Hand „Grundgesetzänderung“. Lückentexte: Verfassungskern = Art. 79 Abs. 3, Strukturprinzipien = Art. 20.</div></div></details></section><section class="sheet" style="margin-bottom:14px"><h3 style="margin-top:0">Wehrhafte Demokratie</h3><p class="kurz">Die Demokratie verteidigt sich mit rechtlichen Mitteln gegen ihre Feinde, als Lehre aus Weimar. Die wichtigsten Werkzeuge: Ewigkeitsklausel, Parteiverbot, Vereinsverbot, Grundrechtsverwirkung, Widerstandsrecht und Verfassungsschutz.</p><p><b>Das musst du morgen können:</b></p><ul class="plain"><li>☐ Begriff erklären + Lehre aus Weimar</li><li>☐ Mindestens 4 Elemente mit Artikel nennen</li><li>☐ Art. 18, Art. 9 Abs. 2 und Art. 20 Abs. 4 kurz erklären</li><li>☐ fdGO-Kern: Menschenwürde, Demokratie, Rechtsstaat</li></ul><details class="more"><summary>Ausführlich nachlesen</summary><div class="in"><div class="tbl"><table><tr><th>Element</th><th>Fundstelle</th></tr>
+<tr><td>Ewigkeitsklausel</td><td>Art. 79 Abs. 3</td></tr><tr><td>Parteiverbot</td><td>Art. 21 Abs. 2, 4</td></tr><tr><td>Ausschluss von staatlicher Finanzierung</td><td>Art. 21 Abs. 3</td></tr><tr><td>Vereinsverbot</td><td>Art. 9 Abs. 2</td></tr><tr><td>Grundrechtsverwirkung (entscheidet BVerfG)</td><td>Art. 18</td></tr><tr><td>Widerstandsrecht (alle Deutschen, letztes Mittel)</td><td>Art. 20 Abs. 4</td></tr><tr><td>Verfassungsschutz (beobachtet, verbietet nichts)</td><td>Art. 73 Abs. 1 Nr. 10, Art. 87 Abs. 1</td></tr><tr><td>Verfassungstreue der Beamten</td><td>Art. 33 Abs. 5</td></tr></table></div>
+<p><b>Warum?</b> Die Weimarer Verfassung war wertneutral. Die Nationalsozialisten beseitigten die Demokratie auf formal legalem Weg (Ermächtigungsgesetz 1933).</p>
+<p><b>fdGO</b> laut BVerfG 2017: Menschenwürde, Demokratieprinzip, Rechtsstaatsprinzip.</p></div></details></section><section class="sheet" style="margin-bottom:14px"><h3 style="margin-top:0">Gewaltenteilung</h3><p class="kurz">Die Staatsgewalt wird auf getrennte Träger verteilt, damit niemand zu viel Macht hat. Horizontal heißt: Legislative, Exekutive, Judikative auf einer Ebene. Vertikal heißt: Bund, Länder, Kommunen.</p><p><b>Das musst du morgen können:</b></p><ul class="plain"><li>☐ Definition Gewaltenteilung</li><li>☐ Horizontal vs. vertikal mit je einem Beispiel</li><li>☐ Organe der 3 Gewalten auf Bundes- und Landesebene</li><li>☐ Gewaltenverschränkung an einem Beispiel</li></ul><details class="more"><summary>Ausführlich nachlesen</summary><div class="in"><div class="law">Gewaltenteilung ist ein rechtsstaatlicher Grundsatz, demzufolge die Staatsgewalt (d. h. die Macht) durch voneinander getrennte Träger der Staatsgewalt ausgeübt wird.</div>
+<div class="tbl"><table><tr><th></th><th>Legislative</th><th>Exekutive</th><th>Judikative</th></tr>
+<tr><td>Bund</td><td>Bundestag, Bundesrat</td><td>Bundesregierung</td><td>BVerfG, oberste Gerichtshöfe</td></tr>
+<tr><td>Länder</td><td>Landtage</td><td>Landesregierungen</td><td>Gerichte der Länder</td></tr>
+<tr><td>Kommunen</td><td colspan="3">Kreis-, Stadt-, Gemeindeverwaltungen</td></tr></table></div>
+<p><b>Gewaltenverschränkung:</b> Der Bundestag wählt den Kanzler (Art. 63), Minister sind oft Abgeordnete, die Regierung bringt Gesetze ein. Die echte Trennlinie liegt zwischen Regierungsmehrheit und Opposition.</p>
+<p class="muted small">Idee nach Montesquieu (1748). Grundlage im GG: Art. 20 Abs. 2 und 3.</p></div></details></section><section class="sheet" style="margin-bottom:14px"><h3 style="margin-top:0">Grundrechte einteilen</h3><p class="kurz">Grundrechte (Art. 1–19) sind vor allem Abwehrrechte gegen den Staat. Man teilt sie in vier Gruppen: Freiheits-, Unverletzlichkeits-, Gleichheits- und Verfahrensrechte.</p><p><b>Das musst du morgen können:</b></p><ul class="plain"><li>☐ Die 4 Gruppen in je einem Satz erklären</li><li>☐ Je 2 Beispiele mit Artikel pro Gruppe</li><li>☐ Fundstellen im eigenen GG schnell finden</li></ul><details class="more"><summary>Ausführlich nachlesen</summary><div class="in"><div class="tbl"><table><tr><th>Gruppe</th><th>Beispiele</th></tr>
+<tr><td><span class="sw" style="background:#ffd84d"></span><b>Freiheitsrechte</b><br><span class="muted small">Freiräume für eigenes Handeln</span></td><td>Art. 2 Abs. 1, 4, 5, 8, 9, 11, 12, 14</td></tr>
+<tr><td><span class="sw" style="background:#5aa9f0"></span><b>Unverletzlichkeitsrechte</b><br><span class="muted small">geschützter persönlicher Bereich</span></td><td>Art. 2 Abs. 2 (Leben, Körper), 10 (Briefgeheimnis), 13 (Wohnung)</td></tr>
+<tr><td><span class="sw" style="background:#5ccf8a"></span><b>Gleichheitsrechte</b><br><span class="muted small">keine ungerechtfertigte Ungleichbehandlung</span></td><td>Art. 3, 6 Abs. 5, 33 Abs. 1–3, 38 Abs. 1</td></tr>
+<tr><td><span class="sw" style="background:#b98ae6"></span><b>Verfahrensrechte</b><br><span class="muted small">faire Verfahren vor Gerichten und Behörden</span></td><td>Art. 19 Abs. 4, 101, 103, 104</td></tr></table></div>
+<div class="warn">Bücher ordnen manche Artikel unterschiedlich ein. Schreib einen Satz Begründung dazu, dann passt es.</div></div></details></section><section class="sheet" style="margin-bottom:14px"><h3 style="margin-top:0">Für wen gelten die Grundrechte?</h3><p class="kurz">Menschenrechte gelten für jeden („Jeder“), Bürgerrechte nur für Deutsche („Alle Deutschen“), das Asylrecht (Art. 16a) speziell für Ausländer.</p><p><b>Das musst du morgen können:</b></p><ul class="plain"><li>☐ Menschenrechte: Erkennungswort „Jeder“ + Beispiel</li><li>☐ Bürgerrechte: „Alle Deutschen“ + Beispiel</li><li>☐ Ausländerrecht: Art. 16a Asyl</li></ul><details class="more"><summary>Ausführlich nachlesen</summary><div class="in"><div class="tbl"><table><tr><th>Art</th><th>Beispiele</th></tr>
+<tr><td><b>Menschenrechte</b> (alle)</td><td>Art. 1, 2, 3, 4, 5, 10, 13, 14, 17, 103</td></tr>
+<tr><td><b>Bürgerrechte</b> (nur Deutsche, Art. 116)</td><td>Art. 8, 9 Abs. 1, 11, 12, 16, 20 Abs. 4, 33</td></tr>
+<tr><td><b>Ausländerrechte</b></td><td>Art. 16a Asylrecht</td></tr></table></div>
+<div class="tip">Markier „Alle Deutschen“ in deinem GG in einer eigenen Farbe, dann siehst du es morgen sofort. Ausländer sind bei Bürgerrechten über Art. 2 Abs. 1 geschützt.</div></div></details></section><section class="sheet" style="margin-bottom:14px"><h3 style="margin-top:0">AfD-Verbotsverfahren</h3><p class="kurz">Über ein Parteiverbot entscheidet nur das Bundesverfassungsgericht mit Zweidrittelmehrheit, auf Antrag von Bundestag, Bundesrat oder Bundesregierung. Die Partei muss planvoll gegen die fdGO arbeiten und eine Chance auf Erfolg haben. Bei der AfD wird politisch gestritten, ob ein Antrag gestellt werden soll.</p><p><b>Das musst du morgen können:</b></p><ul class="plain"><li>☐ Antragsteller + Entscheidung durch BVerfG mit 2/3</li><li>☐ Art. 21 Abs. 2 sinngemäß wiedergeben</li><li>☐ Konkretisierung 2017: planvoll + Potentialität</li><li>☐ NPD 2003 und 2017: warum gescheitert</li><li>☐ Je 2 Pro- und Contra-Argumente</li><li>☐ Bundesrat: 35 von 69 Stimmen nötig</li></ul><details class="more"><summary>Ausführlich nachlesen</summary><div class="in"><div class="law">Art. 21 Abs. 2 GG: Parteien, die nach ihren Zielen oder nach dem Verhalten ihrer Anhänger darauf ausgehen, die freiheitliche demokratische Grundordnung zu beeinträchtigen oder zu beseitigen oder den Bestand der Bundesrepublik Deutschland zu gefährden, sind verfassungswidrig.</div>
+<p><b>Konkretisierung (NPD-Urteil 2017):</b> Ziele gegen Menschenwürde, Demokratie oder Rechtsstaat; planvolles, aktives Handeln (Gesinnung reicht nicht, Gewalt nicht nötig); <b>Potentialität</b>: konkrete Anhaltspunkte, dass die Partei Erfolg haben könnte.</p>
+<div class="tbl"><table><tr><th>Jahr</th><th>Was passierte</th></tr>
+<tr><td>1952 / 1956</td><td>SRP und KPD verboten</td></tr><tr><td>2003</td><td>NPD-Verfahren eingestellt: V-Leute in der Führung</td></tr><tr><td>2017</td><td>NPD verfassungsfeindlich, aber zu unbedeutend. Folge: Art. 21 Abs. 3</td></tr></table></div>
+<p><b>AfD (Stand Material):</b> Bundespartei Verdachtsfall; Einstufung „gesichert rechtsextremistisch“ vom VG Köln im Feb. 2026 vorläufig gestoppt. Gesichert rechtsextrem: Landesverbände Brandenburg, Thüringen, Sachsen, Sachsen-Anhalt, Niedersachsen, frühere JA.</p>
+<p><b>Positionen:</b> Grüne und Linke dafür; SPD will per Bund-Länder-Arbeitsgruppe prüfen; CDU/CSU-Spitze dagegen (Ausnahmen u. a. Wüst, Günther). Umfrage: 43 % für, 51 % gegen ein Verbot.</p>
+<p><b>Bundesrat:</b> 35 von 69 nötig. SPD-Länder 18, + BW 24, + Berlin 28, + Schleswig-Holstein 32, dann fehlt z. B. NRW.</p>
+<div class="tbl"><table><tr><th>Pro</th><th>Contra</th></tr>
+<tr><td>Mittel der wehrhaften Demokratie</td><td>Opferrolle für die AfD</td></tr>
+<tr><td>Verlust von Mandaten und Geld</td><td>Scheitern wäre ein Erfolg für die AfD</td></tr>
+<tr><td>AfD hat Einfluss (anders als NPD)</td><td>Einstellungen der Wähler bleiben</td></tr>
+<tr><td>Später wird es schwieriger</td><td>dauert Jahre, Ersatzpartei möglich</td></tr></table></div>
+<div class="tip">Bei der eigenen Stellungnahme zählt die Begründung, nicht welche Seite du wählst: These, zwei Argumente, ein Gegenargument, Fazit.</div>
+<div class="warn">Im Heft nachbessern: Frage 2 mit dem Wortlaut von Art. 21 Abs. 2 beantworten. Deine Notizen bei Frage 4 gehören eigentlich zu Frage 3.</div></div></details></section><section class="sheet" style="margin-bottom:14px"><h3 style="margin-top:0">Politisches System</h3><p class="kurz">Deutschland ist eine parlamentarische Demokratie und ein Bundesstaat. Das Volk wählt den Bundestag, der den Kanzler wählt. Bundesrat, Bundespräsident und Bundesverfassungsgericht ergänzen und kontrollieren.</p><p><b>Das musst du morgen können:</b></p><ul class="plain"><li>☐ Die 6 Verfassungsorgane nennen</li><li>☐ Wer wählt wen?</li><li>☐ Wahlrechtsgrundsätze + Erst-/Zweitstimme</li><li>☐ Misstrauensvotum (Art. 67) und Vertrauensfrage (Art. 68)</li></ul><details class="more"><summary>Ausführlich nachlesen</summary><div class="in"><div class="tbl"><table><tr><th>Organ</th><th>Kurz</th></tr>
+<tr><td>Bundestag</td><td>630 Abgeordnete, Gesetze, wählt Kanzler, kontrolliert Regierung</td></tr>
+<tr><td>Bundesrat</td><td>Länder, 69 Stimmen, wirkt an Gesetzen mit</td></tr>
+<tr><td>Bundesregierung</td><td>Kanzler + Minister (Art. 65: Kanzler-, Ressort-, Kollegialprinzip)</td></tr>
+<tr><td>Bundespräsident</td><td>Staatsoberhaupt, 5 Jahre, von der Bundesversammlung gewählt</td></tr>
+<tr><td>BVerfG</td><td>16 Richter, je halb von Bundestag und Bundesrat gewählt</td></tr>
+<tr><td>Bundesversammlung</td><td>wählt nur den Bundespräsidenten</td></tr></table></div>
+<ul class="plain"><li>Wähler → Bundestag → Kanzler (Art. 63) → Minister (ernannt vom Bundespräsidenten)</li><li>Wähler → Landtage → Landesregierungen → Bundesrat</li><li>Bundestag + Ländervertreter = Bundesversammlung → Bundespräsident</li></ul>
+<p><b>Wahl (Art. 38):</b> allgemein, unmittelbar, frei, gleich, geheim. Erststimme = Kandidat, Zweitstimme = Partei (entscheidet die Sitzverteilung). 5 %-Hürde.</p>
+<p><b>Art. 67:</b> Kanzler nur abwählbar, wenn gleichzeitig ein Nachfolger gewählt wird (Lehre aus Weimar). <b>Art. 68:</b> Vertrauensfrage, bei Scheitern kann der Bundespräsident den Bundestag auflösen.</p>
+<p class="muted small">Die Buchabbildungen S. 32/36 zeigen vermutlich dieses „Wer wählt wen“-Schema.</p></div></details></section><section class="sheet" style="margin-bottom:14px"><h3 style="margin-top:0">KA-Technik: Operatoren & Markier-Plan</h3><p>Immer <span class="mk">ganze Sätze</span> und Fundstelle im Format <b>Art. 21 Abs. 2 GG</b>.</p>
+<div class="tbl"><table><tr><th>Operator</th><th>Bedeutet</th></tr>
+<tr><td>Nennen</td><td>aufzählen, ohne Erklärung</td></tr><tr><td>Erklären</td><td>verständlich machen, mit Grund</td></tr><tr><td>Erläutern</td><td>erklären + Beispiel/Artikel</td></tr><tr><td>Zuordnen</td><td>in Gruppen sortieren, kurz begründen</td></tr><tr><td>Stellung nehmen</td><td>Pro, Contra, eigenes Fazit</td></tr></table></div>
+<h3>Markier-Plan für dein GG</h3>
+<div class="tbl"><table>
+<tr><td><span class="sw" style="background:#e9435b"></span>Rot</td><td>Wehrhafte Demokratie: 9 II, 18, 20 IV, 21 II–IV, 79 III</td></tr>
+<tr><td><span class="sw" style="background:#ffd84d"></span>Gelb</td><td>Freiheitsrechte</td></tr>
+<tr><td><span class="sw" style="background:#5aa9f0"></span>Blau</td><td>Unverletzlichkeitsrechte</td></tr>
+<tr><td><span class="sw" style="background:#5ccf8a"></span>Grün</td><td>Gleichheitsrechte</td></tr>
+<tr><td><span class="sw" style="background:#b98ae6"></span>Lila</td><td>Verfahrensrechte</td></tr>
+<tr><td><span class="sw" style="background:#ff9b4a"></span>Orange</td><td>nur die Wörter „Alle Deutschen“</td></tr></table></div>
+<p class="muted small">Merker an Art. 1, 20, 21, 38, 63, 67, 79. Ob du Merker beschriften darfst, kläre lieber vorher, Notizen im GG sind verboten.</p></section><h2>Karteikarten</h2><p class="muted">Tippe eine Frage an, um die Antwort zu sehen.</p><h3>Grundgesetz</h3><details class="more"><summary>Wann trat das GG in Kraft?</summary><div class="in">Am 24.05.1949 (verkündet am 23.05.1949). Erarbeitet vom Parlamentarischen Rat in Bonn. Seit 03.10.1990 für ganz Deutschland.</div></details><details class="more"><summary>Was regelt Art. 1 GG?</summary><div class="in">Abs. 1: Menschenwürde ist unantastbar. Abs. 2: Bekenntnis zu den Menschenrechten. Abs. 3: Grundrechte binden Legislative, Exekutive und Judikative.</div></details><details class="more"><summary>Die Strukturprinzipien + Fundstelle</summary><div class="in">Art. 20: Demokratie, Rechtsstaat, Sozialstaat, Bundesstaat, Republik.</div></details><details class="more"><summary>Was bedeutet Volkssouveränität?</summary><div class="in">Art. 20 Abs. 2: Alle Staatsgewalt geht vom Volke aus (Wahlen, Abstimmungen, besondere Organe).</div></details><details class="more"><summary>Wie wird das GG geändert?</summary><div class="in">Art. 79: 2/3 der Mitglieder des Bundestages und 2/3 der Stimmen des Bundesrates. Nie im Bereich von Abs. 3.</div></details><details class="more"><summary>Was schützt die Ewigkeitsklausel?</summary><div class="in">Art. 79 Abs. 3: Gliederung in Länder, Mitwirkung der Länder an der Gesetzgebung, Grundsätze der Art. 1 und 20.</div></details><details class="more"><summary>Formaler vs. materieller Rechtsstaat</summary><div class="in">Formal: Gesetze korrekt beschlossen. Materiell: Gesetze auch inhaltlich gerecht und verfassungsgemäß, Schutz vor „legalem Unrecht“.</div></details><details class="more"><summary>Menschenbild des GG</summary><div class="in">Eigenverantwortliche Persönlichkeit, aber gemeinschaftsbezogen, nie bloßes Objekt des Staates.</div></details><h3>Wehrhafte Demokratie</h3><details class="more"><summary>Was ist wehrhafte Demokratie?</summary><div class="in">Demokratie, die sich mit rechtlichen Mitteln gegen ihre Feinde verteidigt. Lehre aus dem Scheitern der Weimarer Republik.</div></details><details class="more"><summary>Nenne 4 Elemente mit Artikel</summary><div class="in">Art. 79 Abs. 3 Ewigkeitsklausel, Art. 21 Abs. 2 Parteiverbot, Art. 9 Abs. 2 Vereinsverbot, Art. 18 Grundrechtsverwirkung (auch: Art. 20 Abs. 4 Widerstandsrecht, Verfassungsschutz).</div></details><details class="more"><summary>Art. 18 GG</summary><div class="in">Grundrechtsverwirkung: Wer Grundrechte zum Kampf gegen die fdGO missbraucht, verliert sie. Entscheidung durch das BVerfG.</div></details><details class="more"><summary>Art. 9 Abs. 2 GG</summary><div class="in">Vereinsverbot für Vereine gegen Strafgesetze, verfassungsmäßige Ordnung oder Völkerverständigung.</div></details><details class="more"><summary>Art. 20 Abs. 4 GG</summary><div class="in">Widerstandsrecht aller Deutschen gegen jeden, der die Ordnung beseitigen will, wenn keine andere Abhilfe möglich ist.</div></details><details class="more"><summary>Was macht der Verfassungsschutz?</summary><div class="in">Beobachtet extremistische Bestrebungen (Verdachtsfall, gesichert extremistisch). Er verbietet nichts selbst.</div></details><details class="more"><summary>Kern der fdGO (BVerfG 2017)</summary><div class="in">Menschenwürde, Demokratie, Rechtsstaat.</div></details><h3>Gewaltenteilung</h3><details class="more"><summary>Definition Gewaltenteilung</summary><div class="in">Staatsgewalt wird durch voneinander getrennte Träger ausgeübt, um Machtmissbrauch zu verhindern.</div></details><details class="more"><summary>Horizontale Gewaltenteilung</summary><div class="in">Auf einer Ebene: Legislative, Exekutive, Judikative.</div></details><details class="more"><summary>Vertikale Gewaltenteilung</summary><div class="in">Auf verschiedene Ebenen: Bund, Länder, Kommunen.</div></details><details class="more"><summary>Organe der 3 Gewalten im Bund</summary><div class="in">Legislative: Bundestag, Bundesrat. Exekutive: Bundesregierung. Judikative: BVerfG, oberste Gerichtshöfe.</div></details><details class="more"><summary>Gewaltenverschränkung</summary><div class="in">Gewalten sind verbunden: Bundestag wählt Kanzler, Minister sind Abgeordnete, Regierung bringt Gesetze ein.</div></details><h3>Grundrechte</h3><details class="more"><summary>Grundrechte sind vor allem …</summary><div class="in">Abwehrrechte gegen den Staat, Art. 1–19 GG.</div></details><details class="more"><summary>Freiheitsrechte</summary><div class="in">Freiräume für eigenes Handeln, z. B. Art. 5 Meinungsfreiheit, Art. 8 Versammlung, Art. 12 Beruf.</div></details><details class="more"><summary>Unverletzlichkeitsrechte</summary><div class="in">Geschützter persönlicher Bereich: Art. 2 Abs. 2 Leben/Körper, Art. 10 Briefgeheimnis, Art. 13 Wohnung.</div></details><details class="more"><summary>Gleichheitsrechte</summary><div class="in">Keine ungerechtfertigte Ungleichbehandlung: Art. 3, Art. 6 Abs. 5, Art. 33, Art. 38 Abs. 1.</div></details><details class="more"><summary>Verfahrensrechte</summary><div class="in">Faire Verfahren: Art. 19 Abs. 4 Rechtsweg, Art. 101 gesetzlicher Richter, Art. 103, Art. 104.</div></details><h3>Für wen</h3><details class="more"><summary>Menschenrechte</summary><div class="in">Für alle Menschen. Erkennbar an „Jeder“. Z. B. Art. 1, 2, 4, 5.</div></details><details class="more"><summary>Bürgerrechte</summary><div class="in">Nur für Deutsche. Erkennbar an „Alle Deutschen“. Z. B. Art. 8, 11, 12.</div></details><details class="more"><summary>Ausländerrechte</summary><div class="in">Asylrecht für politisch Verfolgte, Art. 16a.</div></details><details class="more"><summary>Wo steht, wer Deutscher ist?</summary><div class="in">Art. 116 Abs. 1 GG.</div></details><h3>Parteiverbot</h3><details class="more"><summary>Wer darf ein Verbot beantragen?</summary><div class="in">Bundestag, Bundesrat, Bundesregierung.</div></details><details class="more"><summary>Wer entscheidet, mit welcher Mehrheit?</summary><div class="in">Nur das Bundesverfassungsgericht (Art. 21 Abs. 4), mit Zweidrittelmehrheit.</div></details><details class="more"><summary>Art. 21 Abs. 2 sinngemäß</summary><div class="in">Partei geht darauf aus, die fdGO zu beeinträchtigen oder zu beseitigen oder den Bestand der BRD zu gefährden.</div></details><details class="more"><summary>Konkretisierung 2017</summary><div class="in">Planvolles, aktives Handeln gegen die fdGO + Potentialität (konkrete Chance auf Erfolg).</div></details><details class="more"><summary>NPD 2003</summary><div class="in">Eingestellt, weil zu viele V-Leute in der Parteiführung waren.</div></details><details class="more"><summary>NPD 2017</summary><div class="in">Verfassungsfeindlich, aber zu unbedeutend. Folge: Art. 21 Abs. 3 (Ausschluss von staatlichen Geldern).</div></details><details class="more"><summary>Bundesrat-Mehrheit</summary><div class="in">35 von 69 Stimmen.</div></details><details class="more"><summary>Pro-Argumente (Material)</summary><div class="in">Mittel der wehrhaften Demokratie, Verlust von Mandaten und Geld, AfD hat echten Einfluss, später schwieriger.</div></details><details class="more"><summary>Contra-Argumente (Material)</summary><div class="in">Opferrolle, Scheitern wäre Erfolg für die AfD, Wählereinstellungen bleiben, dauert Jahre.</div></details><h3>Politisches System</h3><details class="more"><summary>Die 6 Verfassungsorgane</summary><div class="in">Bundestag, Bundesrat, Bundesregierung, Bundespräsident, BVerfG, Bundesversammlung.</div></details><details class="more"><summary>Wahlrechtsgrundsätze</summary><div class="in">Allgemein, unmittelbar, frei, gleich, geheim (Art. 38 Abs. 1).</div></details><details class="more"><summary>Erst- und Zweitstimme</summary><div class="in">Erststimme: Wahlkreiskandidat. Zweitstimme: Partei, entscheidet über die Sitzverteilung.</div></details><details class="more"><summary>Konstruktives Misstrauensvotum</summary><div class="in">Art. 67: Kanzler nur abwählbar, wenn gleichzeitig ein Nachfolger gewählt wird.</div></details><details class="more"><summary>Vertrauensfrage</summary><div class="in">Art. 68: Bekommt der Kanzler keine Mehrheit, kann der Bundespräsident den Bundestag auflösen.</div></details><details class="more"><summary>Wer wählt den Bundespräsidenten?</summary><div class="in">Die Bundesversammlung, für 5 Jahre.</div></details><details class="more"><summary>Wer wählt den Bundeskanzler?</summary><div class="in">Der Bundestag, auf Vorschlag des Bundespräsidenten (Art. 63).</div></details><h2>Quiz</h2><h3>Grundgesetz</h3><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Wann trat das Grundgesetz in Kraft?</b><ul class="plain"><li>24.05.1949</li><li>03.10.1990</li><li>08.05.1945</li></ul><details><summary class="muted">Lösung</summary><p><b>24.05.1949</b>. Verkündet am 23.05., in Kraft am 24.05.1949.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Wer erarbeitete das Grundgesetz?</b><ul class="plain"><li>Der Parlamentarische Rat</li><li>Die Alliierten</li><li>Der erste Bundestag</li></ul><details><summary class="muted">Lösung</summary><p><b>Der Parlamentarische Rat</b>. Vertreter der westdeutschen Länder in Bonn.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Welches Prinzip steht NICHT in Art. 20?</b><ul class="plain"><li>Marktwirtschaft</li><li>Sozialstaat</li><li>Bundesstaat</li></ul><details><summary class="muted">Lösung</summary><p><b>Marktwirtschaft</b>. Das GG legt keine Wirtschaftsordnung fest.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Welche Mehrheit braucht eine GG-Änderung?</b><ul class="plain"><li>2/3 in Bundestag und Bundesrat</li><li>Einfache Mehrheit im Bundestag</li><li>Volksabstimmung</li></ul><details><summary class="muted">Lösung</summary><p><b>2/3 in Bundestag und Bundesrat</b>. Art. 79 Abs. 2.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Was ist nach Art. 79 Abs. 3 unabänderlich?</b><ul class="plain"><li>Die Grundsätze von Art. 1 und 20</li><li>Die Zahl der Bundesländer</li><li>Die 5 %-Hürde</li></ul><details><summary class="muted">Lösung</summary><p><b>Die Grundsätze von Art. 1 und 20</b>. Plus Gliederung in Länder und deren Mitwirkung.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Was verlangt der materielle Rechtsstaat zusätzlich?</b><ul class="plain"><li>Gesetze müssen inhaltlich gerecht sein</li><li>Mehr Gesetze</li><li>Weniger Gerichte</li></ul><details><summary class="muted">Lösung</summary><p><b>Gesetze müssen inhaltlich gerecht sein</b>. Schutz vor „legalem Unrecht“.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Die Grundrechte binden laut Art. 1 Abs. 3 …</b><ul class="plain"><li>alle drei Gewalten</li><li>nur die Gerichte</li><li>nur Privatleute</li></ul><details><summary class="muted">Lösung</summary><p><b>alle drei Gewalten</b>. Als unmittelbar geltendes Recht.</p></details></div><h3>Wehrhafte Demokratie</h3><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Aus welcher Erfahrung entstand die wehrhafte Demokratie?</b><ul class="plain"><li>Scheitern der Weimarer Republik</li><li>Wiedervereinigung</li><li>Gründung der EU</li></ul><details><summary class="muted">Lösung</summary><p><b>Scheitern der Weimarer Republik</b>. Weimar wurde formal legal beseitigt.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Wer entscheidet über die Grundrechtsverwirkung (Art. 18)?</b><ul class="plain"><li>Bundesverfassungsgericht</li><li>Bundespräsident</li><li>Verfassungsschutz</li></ul><details><summary class="muted">Lösung</summary><p><b>Bundesverfassungsgericht</b>. Art. 18 S. 2.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Wer hat das Widerstandsrecht nach Art. 20 Abs. 4?</b><ul class="plain"><li>Alle Deutschen</li><li>Jeder Mensch</li><li>Nur Soldaten</li></ul><details><summary class="muted">Lösung</summary><p><b>Alle Deutschen</b>. Ein Bürgerrecht, nur als letztes Mittel.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Welches Element richtet sich gegen Vereine?</b><ul class="plain"><li>Art. 9 Abs. 2</li><li>Art. 21 Abs. 2</li><li>Art. 79 Abs. 3</li></ul><details><summary class="muted">Lösung</summary><p><b>Art. 9 Abs. 2</b>. Vereinsverbot.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Was darf der Verfassungsschutz?</b><ul class="plain"><li>Extremisten beobachten</li><li>Parteien verbieten</li><li>Urteile fällen</li></ul><details><summary class="muted">Lösung</summary><p><b>Extremisten beobachten</b>. Er sammelt Informationen, verbietet aber nichts.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Kern der fdGO laut BVerfG 2017?</b><ul class="plain"><li>Menschenwürde, Demokratie, Rechtsstaat</li><li>Sozialstaat, Bundesstaat, Republik</li><li>Freiheit, Gleichheit, Brüderlichkeit</li></ul><details><summary class="muted">Lösung</summary><p><b>Menschenwürde, Demokratie, Rechtsstaat</b>. NPD-Urteil 2017.</p></details></div><h3>Gewaltenteilung</h3><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Was ist vertikale Gewaltenteilung?</b><ul class="plain"><li>Verteilung auf Bund, Länder, Kommunen</li><li>Legislative, Exekutive, Judikative</li><li>Trennung von Staat und Kirche</li></ul><details><summary class="muted">Lösung</summary><p><b>Verteilung auf Bund, Länder, Kommunen</b>. Verschiedene Ebenen im Bundesstaat.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Zu welcher Gewalt gehört die Bundesregierung?</b><ul class="plain"><li>Exekutive</li><li>Legislative</li><li>Judikative</li></ul><details><summary class="muted">Lösung</summary><p><b>Exekutive</b>. Sie führt Gesetze aus.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Zu welcher Gewalt gehört der Bundesrat?</b><ul class="plain"><li>Legislative</li><li>Exekutive</li><li>Judikative</li></ul><details><summary class="muted">Lösung</summary><p><b>Legislative</b>. Er wirkt an der Gesetzgebung mit.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Was ist ein Beispiel für Gewaltenverschränkung?</b><ul class="plain"><li>Der Bundestag wählt den Kanzler</li><li>Richter sind unabhängig</li><li>Wahlen sind geheim</li></ul><details><summary class="muted">Lösung</summary><p><b>Der Bundestag wählt den Kanzler</b>. Die Legislative bestimmt den Chef der Exekutive.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Wer gilt als Vordenker der Gewaltenteilung?</b><ul class="plain"><li>Montesquieu</li><li>Karl Marx</li><li>Bismarck</li></ul><details><summary class="muted">Lösung</summary><p><b>Montesquieu</b>. „Vom Geist der Gesetze“, 1748.</p></details></div><h3>Grundrechte</h3><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Art. 10 (Briefgeheimnis) ist ein …</b><ul class="plain"><li>Unverletzlichkeitsrecht</li><li>Gleichheitsrecht</li><li>Verfahrensrecht</li></ul><details><summary class="muted">Lösung</summary><p><b>Unverletzlichkeitsrecht</b>. Geschützter persönlicher Bereich.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Art. 103 Abs. 3 (keine Doppelbestrafung) ist ein …</b><ul class="plain"><li>Verfahrensrecht</li><li>Freiheitsrecht</li><li>Gleichheitsrecht</li></ul><details><summary class="muted">Lösung</summary><p><b>Verfahrensrecht</b>. Justizgrundrecht.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Art. 12 (Berufsfreiheit) ist ein …</b><ul class="plain"><li>Freiheitsrecht</li><li>Verfahrensrecht</li><li>Unverletzlichkeitsrecht</li></ul><details><summary class="muted">Lösung</summary><p><b>Freiheitsrecht</b>. Freie Wahl von Beruf und Ausbildung.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Art. 3 Abs. 2 (Männer und Frauen) ist ein …</b><ul class="plain"><li>Gleichheitsrecht</li><li>Freiheitsrecht</li><li>Verfahrensrecht</li></ul><details><summary class="muted">Lösung</summary><p><b>Gleichheitsrecht</b>. Gleichberechtigung.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Art. 13 (Wohnung) ist ein …</b><ul class="plain"><li>Unverletzlichkeitsrecht</li><li>Gleichheitsrecht</li><li>Verfahrensrecht</li></ul><details><summary class="muted">Lösung</summary><p><b>Unverletzlichkeitsrecht</b>. Die Wohnung ist geschützt.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>In welchen Artikeln stehen die Grundrechte?</b><ul class="plain"><li>Art. 1–19</li><li>Art. 20–37</li><li>Art. 38–69</li></ul><details><summary class="muted">Lösung</summary><p><b>Art. 1–19</b>. Plus grundrechtsgleiche Rechte wie Art. 38, 101, 103.</p></details></div><h3>Für wen</h3><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Die Versammlungsfreiheit (Art. 8) ist ein …</b><ul class="plain"><li>Bürgerrecht</li><li>Menschenrecht</li><li>Ausländerrecht</li></ul><details><summary class="muted">Lösung</summary><p><b>Bürgerrecht</b>. „Alle Deutschen …“</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Die Meinungsfreiheit (Art. 5) ist ein …</b><ul class="plain"><li>Menschenrecht</li><li>Bürgerrecht</li><li>Ausländerrecht</li></ul><details><summary class="muted">Lösung</summary><p><b>Menschenrecht</b>. „Jeder hat das Recht …“</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Welches ist ein Ausländerrecht?</b><ul class="plain"><li>Art. 16a Asylrecht</li><li>Art. 11 Freizügigkeit</li><li>Art. 12 Berufsfreiheit</li></ul><details><summary class="muted">Lösung</summary><p><b>Art. 16a Asylrecht</b>. Für politisch Verfolgte.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Wo ist definiert, wer Deutscher ist?</b><ul class="plain"><li>Art. 116</li><li>Art. 1</li><li>Art. 20</li></ul><details><summary class="muted">Lösung</summary><p><b>Art. 116</b>. Art. 116 Abs. 1.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Die Berufsfreiheit (Art. 12) gilt laut Wortlaut für …</b><ul class="plain"><li>alle Deutschen</li><li>jeden Menschen</li><li>nur EU-Bürger</li></ul><details><summary class="muted">Lösung</summary><p><b>alle Deutschen</b>. Ausländer sind über Art. 2 Abs. 1 geschützt.</p></details></div><h3>Parteiverbot</h3><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Wer darf KEIN Parteiverbot beantragen?</b><ul class="plain"><li>Bundespräsident</li><li>Bundestag</li><li>Bundesrat</li></ul><details><summary class="muted">Lösung</summary><p><b>Bundespräsident</b>. Antragsberechtigt: Bundestag, Bundesrat, Bundesregierung.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Wer entscheidet über ein Parteiverbot?</b><ul class="plain"><li>Bundesverfassungsgericht</li><li>Bundestag</li><li>Verfassungsschutz</li></ul><details><summary class="muted">Lösung</summary><p><b>Bundesverfassungsgericht</b>. Art. 21 Abs. 4.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Welche Mehrheit braucht das BVerfG?</b><ul class="plain"><li>Zweidrittelmehrheit</li><li>Einfache Mehrheit</li><li>Einstimmigkeit</li></ul><details><summary class="muted">Lösung</summary><p><b>Zweidrittelmehrheit</b>. 6 von 8 Richtern.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Was bedeutet „Potentialität“?</b><ul class="plain"><li>Die Partei könnte ihre Ziele tatsächlich erreichen</li><li>Die Partei hat viele Mitglieder</li><li>Die Partei wendet Gewalt an</li></ul><details><summary class="muted">Lösung</summary><p><b>Die Partei könnte ihre Ziele tatsächlich erreichen</b>. Kriterium aus dem NPD-Urteil 2017.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Warum scheiterte das NPD-Verfahren 2003?</b><ul class="plain"><li>V-Leute in der Parteiführung</li><li>Die NPD war zu klein</li><li>Der Antrag kam zu spät</li></ul><details><summary class="muted">Lösung</summary><p><b>V-Leute in der Parteiführung</b>. Verfahrenshindernis.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Welche Parteien wurden verboten?</b><ul class="plain"><li>SRP und KPD</li><li>NPD und DVU</li><li>KPD und NPD</li></ul><details><summary class="muted">Lösung</summary><p><b>SRP und KPD</b>. 1952 und 1956.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Wie viele Stimmen braucht ein Antrag im Bundesrat?</b><ul class="plain"><li>35 von 69</li><li>46 von 69</li><li>33 von 65</li></ul><details><summary class="muted">Lösung</summary><p><b>35 von 69</b>. Absolute Mehrheit.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Was entschied das VG Köln im Februar 2026?</b><ul class="plain"><li>Die AfD darf vorerst nicht als gesichert rechtsextremistisch bezeichnet werden</li><li>Die AfD ist verboten</li><li>Die AfD verliert alle Gelder</li></ul><details><summary class="muted">Lösung</summary><p><b>Die AfD darf vorerst nicht als gesichert rechtsextremistisch bezeichnet werden</b>. Eilverfahren, Hauptsache offen.</p></details></div><h3>Politisches System</h3><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Wie viele Abgeordnete hat der Bundestag?</b><ul class="plain"><li>630</li><li>598</li><li>736</li></ul><details><summary class="muted">Lösung</summary><p><b>630</b>. Seit der Wahlrechtsreform.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Wer wählt den Bundespräsidenten?</b><ul class="plain"><li>Bundesversammlung</li><li>Das Volk</li><li>Bundesrat</li></ul><details><summary class="muted">Lösung</summary><p><b>Bundesversammlung</b>. Art. 54.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Was ist das konstruktive Misstrauensvotum?</b><ul class="plain"><li>Abwahl des Kanzlers durch Wahl eines Nachfolgers</li><li>Kanzler stellt Vertrauensfrage</li><li>Bundespräsident entlässt Kanzler</li></ul><details><summary class="muted">Lösung</summary><p><b>Abwahl des Kanzlers durch Wahl eines Nachfolgers</b>. Art. 67.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Welche Stimme entscheidet über die Sitzverteilung?</b><ul class="plain"><li>Zweitstimme</li><li>Erststimme</li><li>Beide gleich</li></ul><details><summary class="muted">Lösung</summary><p><b>Zweitstimme</b>. Verhältniswahl.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Was ist KEIN Wahlrechtsgrundsatz?</b><ul class="plain"><li>öffentlich</li><li>geheim</li><li>gleich</li></ul><details><summary class="muted">Lösung</summary><p><b>öffentlich</b>. Die Wahl ist geheim.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Wer hat die Richtlinienkompetenz?</b><ul class="plain"><li>Bundeskanzler</li><li>Bundespräsident</li><li>Jeder Minister</li></ul><details><summary class="muted">Lösung</summary><p><b>Bundeskanzler</b>. Art. 65.</p></details></div><div class="sheet" style="margin-bottom:8px;padding:12px 14px"><b>Wer wählt den Bundeskanzler?</b><ul class="plain"><li>Der Bundestag</li><li>Das Volk direkt</li><li>Der Bundesrat</li></ul><details><summary class="muted">Lösung</summary><p><b>Der Bundestag</b>. Art. 63.</p></details></div><h2>Probe-Kurzarbeiten</h2><p class="muted">Je 20 Punkte, 30 Minuten. Erst selbst schreiben, dann aufklappen.</p><h3>Probe-KA A: Werte, Wehrhaftigkeit, Parteiverbot</h3><div class="task"><div class="th2"><span>1. Nennen Sie die fünf Strukturprinzipien des Grundgesetzes mit Fundstelle.</span><span class="pts">3 P.</span></div><details style="margin-top:8px"><summary class="muted">Tipp</summary><p>Schau in Art. 20 Abs. 1. Das fünfte Prinzip steckt im Wort „Bundesrepublik“.</p></details><details style="margin-top:6px"><summary class="muted">Lösung und Erwartungshorizont</summary><ul class="plain"><li>Art. 20 GG angegeben (1 P.)</li><li>Demokratie, Rechtsstaat, Sozialstaat (1 P.)</li><li>Bundesstaat, Republik (1 P.)</li></ul><div class="model"><b>Musterlösung</b><br>Die Strukturprinzipien stehen in Art. 20 GG. Die Bundesrepublik ist eine Demokratie, ein Rechtsstaat, ein Sozialstaat, ein Bundesstaat und eine Republik.</div></details></div><div class="task"><div class="th2"><span>2. Erklären Sie den Begriff „wehrhafte Demokratie“ und nennen Sie zwei Elemente mit Fundstelle.</span><span class="pts">5 P.</span></div><details style="margin-top:8px"><summary class="muted">Tipp</summary><p>Denk an Weimar. Elemente findest du z. B. in Art. 21 und Art. 79.</p></details><details style="margin-top:6px"><summary class="muted">Lösung und Erwartungshorizont</summary><ul class="plain"><li>Demokratie verteidigt sich mit rechtlichen Mitteln gegen ihre Feinde (1,5 P.)</li><li>Lehre aus Weimar (1 P.)</li><li>Element 1 mit Artikel (1,25 P.)</li><li>Element 2 mit Artikel (1,25 P.)</li></ul><div class="model"><b>Musterlösung</b><br>Wehrhafte Demokratie bedeutet, dass sich die Demokratie mit rechtlichen Mitteln gegen Feinde verteidigt, die sie abschaffen wollen. Das ist eine Lehre aus der Weimarer Republik, die auf legalem Weg beseitigt wurde. Ein Element ist das Parteiverbot nach Art. 21 Abs. 2 GG. Ein weiteres ist die Ewigkeitsklausel nach Art. 79 Abs. 3 GG.</div></details></div><div class="task"><div class="th2"><span>3. Erklären Sie den Unterschied zwischen horizontaler und vertikaler Gewaltenteilung.</span><span class="pts">4 P.</span></div><details style="margin-top:8px"><summary class="muted">Tipp</summary><p>Horizontal = auf einer Ebene, vertikal = zwischen den Ebenen.</p></details><details style="margin-top:6px"><summary class="muted">Lösung und Erwartungshorizont</summary><ul class="plain"><li>Horizontal: Legislative, Exekutive, Judikative (1,5 P.)</li><li>Beispiel horizontal (0,5 P.)</li><li>Vertikal: Bund, Länder, Kommunen (1,5 P.)</li><li>Beispiel vertikal (0,5 P.)</li></ul><div class="model"><b>Musterlösung</b><br>Bei der horizontalen Gewaltenteilung wird die Macht auf einer Ebene auf Legislative, Exekutive und Judikative verteilt, zum Beispiel Bundestag, Bundesregierung und Bundesverfassungsgericht. Bei der vertikalen Gewaltenteilung wird die Macht auf Bund, Länder und Kommunen verteilt, zum Beispiel ist die Schule Ländersache.</div></details></div><div class="task"><div class="th2"><span>4. Ordnen Sie Art. 8 und Art. 10 GG einer Grundrechtsgruppe zu und geben Sie an, ob es Menschen- oder Bürgerrechte sind.</span><span class="pts">4 P.</span></div><details style="margin-top:8px"><summary class="muted">Tipp</summary><p>Lies den ersten Satz beider Artikel: steht da „Jeder“ oder „Alle Deutschen“?</p></details><details style="margin-top:6px"><summary class="muted">Lösung und Erwartungshorizont</summary><ul class="plain"><li>Art. 8: Freiheitsrecht (1 P.)</li><li>Art. 8: Bürgerrecht („Alle Deutschen“) (1 P.)</li><li>Art. 10: Unverletzlichkeitsrecht (1 P.)</li><li>Art. 10: Menschenrecht (1 P.)</li></ul><div class="model"><b>Musterlösung</b><br>Die Versammlungsfreiheit nach Art. 8 GG ist ein Freiheitsrecht und ein Bürgerrecht, weil sie nur allen Deutschen zusteht. Das Briefgeheimnis nach Art. 10 GG ist ein Unverletzlichkeitsrecht und ein Menschenrecht, das für jeden gilt.</div></details></div><div class="task"><div class="th2"><span>5. Nennen Sie, wer ein Parteiverbot beantragen darf und wer darüber entscheidet.</span><span class="pts">4 P.</span></div><details style="margin-top:8px"><summary class="muted">Tipp</summary><p>Drei Verfassungsorgane beantragen, eines entscheidet (Art. 21 Abs. 4).</p></details><details style="margin-top:6px"><summary class="muted">Lösung und Erwartungshorizont</summary><ul class="plain"><li>Bundestag, Bundesrat, Bundesregierung (2 P.)</li><li>Bundesverfassungsgericht entscheidet (1,5 P.)</li><li>mit Zweidrittelmehrheit (0,5 P.)</li></ul><div class="model"><b>Musterlösung</b><br>Ein Parteiverbot können der Bundestag, der Bundesrat oder die Bundesregierung beantragen. Darüber entscheidet nach Art. 21 Abs. 4 GG allein das Bundesverfassungsgericht, und zwar mit Zweidrittelmehrheit.</div></details></div><h3>Probe-KA B: Verfassungskern, Rechtsstaat, Grundrechte</h3><div class="task"><div class="th2"><span>1. Nennen Sie, was die Ewigkeitsklausel (Art. 79 Abs. 3 GG) schützt.</span><span class="pts">3 P.</span></div><details style="margin-top:8px"><summary class="muted">Tipp</summary><p>Drei Dinge stehen direkt im Artikel.</p></details><details style="margin-top:6px"><summary class="muted">Lösung und Erwartungshorizont</summary><ul class="plain"><li>Gliederung des Bundes in Länder (1 P.)</li><li>Mitwirkung der Länder an der Gesetzgebung (1 P.)</li><li>Grundsätze der Art. 1 und 20 (1 P.)</li></ul><div class="model"><b>Musterlösung</b><br>Die Ewigkeitsklausel schützt die Gliederung des Bundes in Länder, die grundsätzliche Mitwirkung der Länder an der Gesetzgebung und die Grundsätze der Art. 1 und 20 GG.</div></details></div><div class="task"><div class="th2"><span>2. Unterscheiden Sie einen formalen und einen materiellen Rechtsstaat.</span><span class="pts">4 P.</span></div><details style="margin-top:8px"><summary class="muted">Tipp</summary><p>Formal = Form/Verfahren, materiell = Inhalt. Stichwort „legales Unrecht“.</p></details><details style="margin-top:6px"><summary class="muted">Lösung und Erwartungshorizont</summary><ul class="plain"><li>Formal: Gesetze korrekt beschlossen (1,5 P.)</li><li>Materiell: Gesetze inhaltlich verfassungsgemäß/gerecht (1,5 P.)</li><li>Schutz vor „legalem Unrecht“ (1 P.)</li></ul><div class="model"><b>Musterlösung</b><br>Im formalen Rechtsstaat handelt der Staat nach Gesetzen, die formal korrekt beschlossen wurden. Im materiellen Rechtsstaat müssen die Gesetze zusätzlich inhaltlich der Verfassung und den Menschenrechten entsprechen. So wird „legales Unrecht“ verhindert.</div></details></div><div class="task"><div class="th2"><span>3. Ordnen Sie Bundestag, Bundesregierung, Bundesverfassungsgericht und Landtag den drei Gewalten zu.</span><span class="pts">4 P.</span></div><details style="margin-top:8px"><summary class="muted">Tipp</summary><p>Zwei der vier gehören zur selben Gewalt.</p></details><details style="margin-top:6px"><summary class="muted">Lösung und Erwartungshorizont</summary><ul class="plain"><li>Bundestag: Legislative (1 P.)</li><li>Bundesregierung: Exekutive (1 P.)</li><li>BVerfG: Judikative (1 P.)</li><li>Landtag: Legislative (1 P.)</li></ul><div class="model"><b>Musterlösung</b><br>Der Bundestag und der Landtag gehören zur Legislative. Die Bundesregierung gehört zur Exekutive. Das Bundesverfassungsgericht gehört zur Judikative.</div></details></div><div class="task"><div class="th2"><span>4. Erklären Sie eine Grundrechtsgruppe und nennen Sie zwei Beispiele mit Artikel.</span><span class="pts">4 P.</span></div><details style="margin-top:8px"><summary class="muted">Tipp</summary><p>Am einfachsten: Freiheitsrechte mit Art. 5 und Art. 12.</p></details><details style="margin-top:6px"><summary class="muted">Lösung und Erwartungshorizont</summary><ul class="plain"><li>Gruppe richtig erklärt (2 P.)</li><li>Beispiel 1 mit Artikel (1 P.)</li><li>Beispiel 2 mit Artikel (1 P.)</li></ul><div class="model"><b>Musterlösung</b><br>Freiheitsrechte sichern dem Einzelnen Freiräume, in denen der Staat ihm nichts vorschreiben darf. Beispiele sind die Meinungsfreiheit nach Art. 5 GG und die Berufsfreiheit nach Art. 12 GG.</div></details></div><div class="task"><div class="th2"><span>5. Erklären Sie, warum das NPD-Verbot 2017 scheiterte.</span><span class="pts">5 P.</span></div><details style="margin-top:8px"><summary class="muted">Tipp</summary><p>Die NPD war verfassungsfeindlich, aber …? Stichwort Potentialität.</p></details><details style="margin-top:6px"><summary class="muted">Lösung und Erwartungshorizont</summary><ul class="plain"><li>NPD war verfassungsfeindlich (1,5 P.)</li><li>aber zu unbedeutend / keine Potentialität (2 P.)</li><li>Folge: Art. 21 Abs. 3 (keine staatlichen Gelder) (1,5 P.)</li></ul><div class="model"><b>Musterlösung</b><br>Das Bundesverfassungsgericht stellte 2017 fest, dass die NPD verfassungsfeindliche Ziele verfolgt. Ein Verbot lehnte es trotzdem ab, weil die Partei zu unbedeutend war, um ihre Ziele tatsächlich zu erreichen. Als Folge wurde Art. 21 Abs. 3 GG eingeführt, nach dem solche Parteien von staatlichen Geldern ausgeschlossen werden können.</div></details></div><h3>Probe-KA C: Politisches System &amp; AfD-Debatte</h3><div class="task"><div class="th2"><span>1. Nennen Sie vier Verfassungsorgane des Bundes.</span><span class="pts">4 P.</span></div><details style="margin-top:8px"><summary class="muted">Tipp</summary><p>Zwei davon beginnen mit „Bundes-“ und enden auf „-tag“ bzw. „-rat“.</p></details><details style="margin-top:6px"><summary class="muted">Lösung und Erwartungshorizont</summary><ul class="plain"><li>Je richtiges Organ 1 Punkt (max. 4) (4 P.)</li></ul><div class="model"><b>Musterlösung</b><br>Verfassungsorgane des Bundes sind zum Beispiel der Bundestag, der Bundesrat, die Bundesregierung und der Bundespräsident. Außerdem gehören das Bundesverfassungsgericht und die Bundesversammlung dazu.</div></details></div><div class="task"><div class="th2"><span>2. Erklären Sie das konstruktive Misstrauensvotum.</span><span class="pts">4 P.</span></div><details style="margin-top:8px"><summary class="muted">Tipp</summary><p>Art. 67. Was muss der Bundestag gleichzeitig tun?</p></details><details style="margin-top:6px"><summary class="muted">Lösung und Erwartungshorizont</summary><ul class="plain"><li>Art. 67 GG (0,5 P.)</li><li>Abwahl nur durch Wahl eines Nachfolgers (2 P.)</li><li>Grund: stabile Regierung / Lehre aus Weimar (1,5 P.)</li></ul><div class="model"><b>Musterlösung</b><br>Nach Art. 67 GG kann der Bundestag den Kanzler nur abwählen, wenn er gleichzeitig einen Nachfolger mit Mehrheit wählt. Damit soll verhindert werden, dass eine Regierung gestürzt wird, ohne dass eine neue gebildet werden kann, wie in der Weimarer Republik.</div></details></div><div class="task"><div class="th2"><span>3. Erklären Sie den Unterschied zwischen Menschen- und Bürgerrechten mit je einem Beispiel.</span><span class="pts">4 P.</span></div><details style="margin-top:8px"><summary class="muted">Tipp</summary><p>„Jeder“ vs. „Alle Deutschen“.</p></details><details style="margin-top:6px"><summary class="muted">Lösung und Erwartungshorizont</summary><ul class="plain"><li>Menschenrechte gelten für alle (1 P.)</li><li>Beispiel (z. B. Art. 5) (1 P.)</li><li>Bürgerrechte nur für Deutsche (1 P.)</li><li>Beispiel (z. B. Art. 8) (1 P.)</li></ul><div class="model"><b>Musterlösung</b><br>Menschenrechte gelten für alle Menschen in Deutschland, zum Beispiel die Meinungsfreiheit nach Art. 5 GG. Bürgerrechte gelten nur für Deutsche, zum Beispiel die Versammlungsfreiheit nach Art. 8 GG.</div></details></div><div class="task"><div class="th2"><span>4. Nennen Sie je zwei Argumente für und gegen ein AfD-Verbotsverfahren.</span><span class="pts">4 P.</span></div><details style="margin-top:8px"><summary class="muted">Tipp</summary><p>Pro: wehrhafte Demokratie, Geld. Contra: Opferrolle, Scheitern.</p></details><details style="margin-top:6px"><summary class="muted">Lösung und Erwartungshorizont</summary><ul class="plain"><li>Pro-Argument 1 (1 P.)</li><li>Pro-Argument 2 (1 P.)</li><li>Contra-Argument 1 (1 P.)</li><li>Contra-Argument 2 (1 P.)</li></ul><div class="model"><b>Musterlösung</b><br>Für ein Verfahren spricht, dass es ein Mittel der wehrhaften Demokratie ist und die AfD ihre Mandate und staatlichen Gelder verlieren würde. Dagegen spricht, dass sich die AfD als Opfer darstellen könnte und ein gescheitertes Verfahren ein großer Erfolg für sie wäre.</div></details></div><div class="task"><div class="th2"><span>5. Erläutern Sie, wie viele Stimmen im Bundesrat für einen Verbotsantrag nötig sind und warum eine Mehrheit laut Material nicht unrealistisch ist.</span><span class="pts">4 P.</span></div><details style="margin-top:8px"><summary class="muted">Tipp</summary><p>69 Stimmen insgesamt. Die Rechnung im SZ-Text endet bei 32.</p></details><details style="margin-top:6px"><summary class="muted">Lösung und Erwartungshorizont</summary><ul class="plain"><li>35 von 69 Stimmen (1,5 P.)</li><li>Rechnung bis ca. 32 Stimmen (SPD-Länder, BW, Berlin, SH) (1,5 P.)</li><li>Es fehlt nur noch ein Land, z. B. NRW (1 P.)</li></ul><div class="model"><b>Musterlösung</b><br>Für einen Antrag im Bundesrat braucht man 35 von 69 Stimmen. Die SPD-geführten Länder ohne Union, Baden-Württemberg, Berlin und Schleswig-Holstein kämen zusammen auf 32 Stimmen. Es würde also nur noch ein weiteres Land fehlen, zum Beispiel Nordrhein-Westfalen.</div></details></div></div>
+
+
+
+  <!-- ÜBERSICHT -->
+  <section class="view" id="v-lernen" aria-label="Übersicht und Lernen">
+    <div class="hero">
+      <div class="ring" aria-hidden="true">
+        <svg width="132" height="132" viewBox="0 0 132 132"><circle class="bg" cx="66" cy="66" r="56" fill="none" stroke-width="12"/><circle class="fg" id="ringfg" cx="66" cy="66" r="56" fill="none" stroke-width="12" stroke-linecap="round" stroke-dasharray="351.9" stroke-dashoffset="351.9"/></svg>
+        <div class="val"><b id="ready">0</b><span>% bereit</span></div>
+      </div>
+      <div>
+        <span class="kpill" id="kpill" hidden></span>
+        <h1 id="hello">Bereit für die Kurzarbeit?</h1>
+        <p class="verdict" id="verdict"></p>
+        <div class="profbar"><button class="chip" id="profBtn" aria-expanded="false">👤 <span id="profName"></span> ▾</button></div>
+        <div class="profpanel" id="profPanel" hidden>
+          <b class="small">Profile auf diesem Gerät</b>
+          <div class="plist" id="plist"></div>
+          <div class="f"><label class="small">Name<input id="pname" placeholder="Dein Vorname" maxlength="30"></label><label class="small">Kurzarbeit am<input id="pdate" type="date"></label></div>
+          <div class="row" style="margin-top:10px"><button class="btn sm" id="profNew">+ Neues Profil</button><button class="btn sm ghost" id="expBtn">Sicherung speichern</button><label class="btn sm ghost">Sicherung laden<input type="file" id="impIn" accept=".json,application/json" hidden></label></div>
+          <p class="muted small" style="margin:10px 0 0">Alles bleibt nur in diesem Browser auf diesem Gerät. Mit „Sicherung speichern“ nimmst du deinen Stand aufs nächste Gerät mit.</p>
+        </div>
+      </div>
+    </div>
+    <div class="counts" id="counts"></div>
+
+    <h2>Als Nächstes</h2>
+    <div class="next" id="next"></div>
+
+    <h2>Deine Themen</h2>
+    <p class="muted">Jedes Thema setzt sich zusammen aus deiner Checkliste, den gewussten Karteikarten und deiner Trefferquote beim Üben. Tippe ein Thema an.</p>
+    <div id="topics"></div>
+
+    <div class="topic" id="technik">
+      <button class="th" aria-expanded="false"><span class="no">✎</span><span class="nm">KA-Technik: Operatoren &amp; Markier-Plan</span><span class="pc"></span></button>
+      <div class="tb" id="technikBody"></div>
+    </div>
+
+    <div class="reset"><button class="btn ghost sm" id="resetAll">Gesamten Fortschritt löschen</button></div>
+  </section>
+
+  <section class="view" id="v-medien" aria-label="Podcast und Video">
+    <h2>Hören &amp; Sehen</h2>
+    <p class="muted">Der ganze Stoff als Podcast für unterwegs und als Video-Überblick zum Reinkommen.</p>
+    <article class="media" id="m-audio">
+      <span class="tag">Podcast</span><h3>Die Kurzarbeit zum Mithören <span class="done" id="d-audio"></span></h3>
+      <p class="muted">Zwei Stimmen gehen alle Themen durch: von der Menschenwürde bis zum AfD-Verbotsverfahren.</p>
+      <audio controls preload="metadata" id="aud"><source src="podcast.m4a" type="audio/mp4"><source src="podcast.mp3" type="audio/mpeg"><source src="podcast.wav" type="audio/wav"></audio>
+      <div class="speed" id="speed"><button class="chip" data-r="1" aria-pressed="true">1×</button><button class="chip" data-r="1.25">1,25×</button><button class="chip" data-r="1.5">1,5×</button><button class="chip" data-r="1.75">1,75×</button></div>
+      <div class="missing"><b>Der Podcast kommt bald.</b><br><span class="muted small">Datei „podcast.m4a“ (oder .mp3/.wav) neben index.html ablegen.</span></div>
+    </article>
+    <article class="media" id="m-video">
+      <span class="tag">Video</span><h3>Video-Überblick <span class="done" id="d-video"></span></h3>
+      <p class="muted">Die wichtigsten Zusammenhänge mit Schaubildern, ideal als Einstieg oder zum Abschluss.</p>
+      <video controls playsinline preload="metadata" id="vid"><source src="video.mp4" type="video/mp4"></video>
+      <div class="missing"><b>Das Video kommt bald.</b><br><span class="muted small">Datei „video.mp4“ neben index.html ablegen.</span></div>
+    </article>
+    <div class="tip">Tipp: Erst Video schauen, dann Themen in der Übersicht abhaken, Podcast auf dem Schulweg wiederholen.</div>
+  </section>
+
+  <section class="view" id="v-karten" aria-label="Karteikarten">
+    <h2>Karteikarten</h2>
+    <div class="chips" id="kcats"></div>
+    <div class="row" style="justify-content:space-between">
+      <span class="muted" id="kcount"></span>
+      <label class="muted small"><input type="checkbox" id="konly"> nur unsichere</label>
+    </div>
+    <div class="progress"><i id="kprog"></i></div>
+    <div class="card" id="card" tabindex="0" role="button" aria-label="Karte umdrehen">
+      <div class="card-in">
+        <div class="face front"><div class="cat" id="kcat1"></div><div class="q" id="kq"></div><div class="hint">Tippen zum Umdrehen</div></div>
+        <div class="face back"><div class="cat" id="kcat2"></div><div id="ka"></div></div>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn bad" id="kno">Nochmal</button>
+      <button class="btn ok" id="kyes">Gewusst</button>
+      <button class="btn ghost" id="kshuf">Mischen</button>
+    </div>
+  </section>
+
+  <section class="view" id="v-quiz" aria-label="Quiz"><h2>Quiz</h2><div id="quiz"></div></section>
+
+  <section class="view" id="v-artikel" aria-label="Fundstellen-Trainer">
+    <h2>Fundstellen-Trainer</h2>
+    <p class="muted">Schlag ruhig in deinem GG nach, genau so wie morgen.</p>
+    <div class="chips" id="amodes"></div>
+    <div id="artikel"></div>
+  </section>
+
+  <section class="view" id="v-probe" aria-label="Probe-Kurzarbeiten">
+    <h2>Probe-Kurzarbeiten</h2>
+    <p class="muted">Fünf Aufgaben, 20 Punkte, 30 Minuten. Bei jeder Aufgabe gibt es einen Tipp, falls du hängst. Danach Lösung aufdecken und abhaken.</p>
+    <div class="chips" id="pchoose"></div>
+    <div id="probe"></div>
+  </section>
+</main>
+<footer>Stoff nach Unterrichtsmaterial und LehrplanPLUS. Fortschritt bleibt nur auf deinem Gerät gespeichert.</footer>
+</div>
+
+<nav class="tabs" aria-label="Bereiche"><div class="in">
+  <a href="#lernen" data-v="lernen"><span class="ic">◔</span>Übersicht</a>
+  <a href="#medien" data-v="medien"><span class="ic">♫</span>Hören</a>
+  <a href="#karten" data-v="karten"><span class="ic">▤</span>Karten</a>
+  <a href="#quiz" data-v="quiz"><span class="ic">?</span>Quiz</a>
+  <a href="#artikel" data-v="artikel"><span class="ic">§</span>Artikel</a>
+  <a href="#probe" data-v="probe"><span class="ic">✎</span>Probe-KA</a>
+</div></nav>
+
+<script>
+/* ===== Profile & dauerhafter Speicher (nur auf diesem Gerät) ===== */
+const P0="pug26:";
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{if(v==null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){}}
+function lsKeys(){const a=[];try{for(let i=0;i<localStorage.length;i++)a.push(localStorage.key(i))}catch(e){}return a}
+let profiles=[];try{profiles=JSON.parse(lsGet(P0+"profiles")||"[]")||[]}catch(e){profiles=[]}
+let active=lsGet(P0+"active");
+const newId=()=>"p"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+function saveProfiles(){lsSet(P0+"profiles",JSON.stringify(profiles));lsSet(P0+"active",active)}
+if(!profiles.length){const id=newId();
+  lsKeys().filter(k=>k.startsWith(P0)&&!k.startsWith(P0+"p:")&&k!==P0+"profiles"&&k!==P0+"active").forEach(k=>{lsSet(P0+"p:"+id+":"+k.slice(P0.length),lsGet(k));lsSet(k,null)});
+  let nm="";try{nm=JSON.parse(lsGet(P0+"p:"+id+":name")||"\"\"")||""}catch(e){}
+  profiles=[{id,name:nm}];active=id;saveProfiles()}
+if(!profiles.some(p=>p.id===active)){active=profiles[0].id;saveProfiles()}
+const pre=id=>P0+"p:"+id+":";
+const store={get(k,d){try{const v=lsGet(pre(active)+k);const p=v?JSON.parse(v):null;return p==null?d:p}catch(e){return d}},set(k,v){lsSet(pre(active)+k,v==null?null:JSON.stringify(v))}};
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{})}catch(e){}
+const $=s=>document.querySelector(s);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ================= THEMEN ================= */
+const TOP=[
+{id:"gg",cat:"Grundgesetz",name:"Grundgesetz & Werte",
+kurz:"Das Grundgesetz (in Kraft seit 24.05.1949) stellt die Menschenwürde in Art. 1 an die Spitze. Art. 20 legt die fünf Strukturprinzipien fest, Art. 79 regelt, wie man die Verfassung ändern darf und was nie geändert werden darf.",
+must:["Art. 1: Menschenwürde, Grundrechte binden alle drei Gewalten","Die 5 Strukturprinzipien aus Art. 20 nennen","Art. 79: Änderung nur mit 2/3 in Bundestag und Bundesrat","Ewigkeitsklausel Art. 79 Abs. 3 erklären","Formaler vs. materieller Rechtsstaat"],
+more:`<p>Erarbeitet vom <b>Parlamentarischen Rat</b> in Bonn, verkündet 23.05.1949, in Kraft 24.05.1949, seit 03.10.1990 für ganz Deutschland. <b>Wertgebunden</b>: Bestimmte Werte stehen über jeder Mehrheitsentscheidung.</p>
+<div class="law">Art. 1 Abs. 1 GG: Die Würde des Menschen ist unantastbar. Sie zu achten und zu schützen ist Verpflichtung aller staatlichen Gewalt.</div>
+<div class="tbl"><table><tr><th>Prinzip (Art. 20)</th><th>Kern</th></tr>
+<tr><td>Demokratie</td><td>Alle Staatsgewalt geht vom Volke aus (Abs. 2), repräsentative Demokratie</td></tr>
+<tr><td>Rechtsstaat</td><td>Bindung an Gesetz und Recht, Gewaltenteilung, unabhängige Gerichte (Abs. 2, 3)</td></tr>
+<tr><td>Sozialstaat</td><td>soziale Gerechtigkeit, Existenzminimum</td></tr>
+<tr><td>Bundesstaat</td><td>Bund und 16 Länder</td></tr>
+<tr><td>Republik</td><td>Staatsoberhaupt auf Zeit gewählt</td></tr></table></div>
+<p><b>Formaler Rechtsstaat:</b> Gesetze sind formal korrekt zustande gekommen. <b>Materieller Rechtsstaat:</b> Gesetze müssen auch inhaltlich der Verfassung und den Menschenrechten entsprechen, Schutz vor „legalem Unrecht“.</p>
+<p><b>Art. 79:</b> Abs. 2 verlangt 2/3 der Mitglieder des Bundestages und 2/3 der Stimmen des Bundesrates. Abs. 3 (Ewigkeitsklausel) verbietet Änderungen an der Gliederung in Länder, der Mitwirkung der Länder an der Gesetzgebung und an den Grundsätzen der Art. 1 und 20.</p>
+<div class="tip">Karikatur im Heft: Der Bundesadler (Art. 79 III) schützt die Eier „Art. 1“ und „Art. 20“ vor der Hand „Grundgesetzänderung“. Lückentexte: Verfassungskern = Art. 79 Abs. 3, Strukturprinzipien = Art. 20.</div>`},
+{id:"wehr",cat:"Wehrhafte Demokratie",name:"Wehrhafte Demokratie",
+kurz:"Die Demokratie verteidigt sich mit rechtlichen Mitteln gegen ihre Feinde, als Lehre aus Weimar. Die wichtigsten Werkzeuge: Ewigkeitsklausel, Parteiverbot, Vereinsverbot, Grundrechtsverwirkung, Widerstandsrecht und Verfassungsschutz.",
+must:["Begriff erklären + Lehre aus Weimar","Mindestens 4 Elemente mit Artikel nennen","Art. 18, Art. 9 Abs. 2 und Art. 20 Abs. 4 kurz erklären","fdGO-Kern: Menschenwürde, Demokratie, Rechtsstaat"],
+more:`<div class="tbl"><table><tr><th>Element</th><th>Fundstelle</th></tr>
+<tr><td>Ewigkeitsklausel</td><td>Art. 79 Abs. 3</td></tr><tr><td>Parteiverbot</td><td>Art. 21 Abs. 2, 4</td></tr><tr><td>Ausschluss von staatlicher Finanzierung</td><td>Art. 21 Abs. 3</td></tr><tr><td>Vereinsverbot</td><td>Art. 9 Abs. 2</td></tr><tr><td>Grundrechtsverwirkung (entscheidet BVerfG)</td><td>Art. 18</td></tr><tr><td>Widerstandsrecht (alle Deutschen, letztes Mittel)</td><td>Art. 20 Abs. 4</td></tr><tr><td>Verfassungsschutz (beobachtet, verbietet nichts)</td><td>Art. 73 Abs. 1 Nr. 10, Art. 87 Abs. 1</td></tr><tr><td>Verfassungstreue der Beamten</td><td>Art. 33 Abs. 5</td></tr></table></div>
+<p><b>Warum?</b> Die Weimarer Verfassung war wertneutral. Die Nationalsozialisten beseitigten die Demokratie auf formal legalem Weg (Ermächtigungsgesetz 1933).</p>
+<p><b>fdGO</b> laut BVerfG 2017: Menschenwürde, Demokratieprinzip, Rechtsstaatsprinzip.</p>`},
+{id:"gew",cat:"Gewaltenteilung",name:"Gewaltenteilung",
+kurz:"Die Staatsgewalt wird auf getrennte Träger verteilt, damit niemand zu viel Macht hat. Horizontal heißt: Legislative, Exekutive, Judikative auf einer Ebene. Vertikal heißt: Bund, Länder, Kommunen.",
+must:["Definition Gewaltenteilung","Horizontal vs. vertikal mit je einem Beispiel","Organe der 3 Gewalten auf Bundes- und Landesebene","Gewaltenverschränkung an einem Beispiel"],
+more:`<div class="law">Gewaltenteilung ist ein rechtsstaatlicher Grundsatz, demzufolge die Staatsgewalt (d. h. die Macht) durch voneinander getrennte Träger der Staatsgewalt ausgeübt wird.</div>
+<div class="tbl"><table><tr><th></th><th>Legislative</th><th>Exekutive</th><th>Judikative</th></tr>
+<tr><td>Bund</td><td>Bundestag, Bundesrat</td><td>Bundesregierung</td><td>BVerfG, oberste Gerichtshöfe</td></tr>
+<tr><td>Länder</td><td>Landtage</td><td>Landesregierungen</td><td>Gerichte der Länder</td></tr>
+<tr><td>Kommunen</td><td colspan="3">Kreis-, Stadt-, Gemeindeverwaltungen</td></tr></table></div>
+<p><b>Gewaltenverschränkung:</b> Der Bundestag wählt den Kanzler (Art. 63), Minister sind oft Abgeordnete, die Regierung bringt Gesetze ein. Die echte Trennlinie liegt zwischen Regierungsmehrheit und Opposition.</p>
+<p class="muted small">Idee nach Montesquieu (1748). Grundlage im GG: Art. 20 Abs. 2 und 3.</p>`},
+{id:"grr",cat:"Grundrechte",name:"Grundrechte einteilen",
+kurz:"Grundrechte (Art. 1–19) sind vor allem Abwehrrechte gegen den Staat. Man teilt sie in vier Gruppen: Freiheits-, Unverletzlichkeits-, Gleichheits- und Verfahrensrechte.",
+must:["Die 4 Gruppen in je einem Satz erklären","Je 2 Beispiele mit Artikel pro Gruppe","Fundstellen im eigenen GG schnell finden"],
+more:`<div class="tbl"><table><tr><th>Gruppe</th><th>Beispiele</th></tr>
+<tr><td><span class="sw" style="background:#ffd84d"></span><b>Freiheitsrechte</b><br><span class="muted small">Freiräume für eigenes Handeln</span></td><td>Art. 2 Abs. 1, 4, 5, 8, 9, 11, 12, 14</td></tr>
+<tr><td><span class="sw" style="background:#5aa9f0"></span><b>Unverletzlichkeitsrechte</b><br><span class="muted small">geschützter persönlicher Bereich</span></td><td>Art. 2 Abs. 2 (Leben, Körper), 10 (Briefgeheimnis), 13 (Wohnung)</td></tr>
+<tr><td><span class="sw" style="background:#5ccf8a"></span><b>Gleichheitsrechte</b><br><span class="muted small">keine ungerechtfertigte Ungleichbehandlung</span></td><td>Art. 3, 6 Abs. 5, 33 Abs. 1–3, 38 Abs. 1</td></tr>
+<tr><td><span class="sw" style="background:#b98ae6"></span><b>Verfahrensrechte</b><br><span class="muted small">faire Verfahren vor Gerichten und Behörden</span></td><td>Art. 19 Abs. 4, 101, 103, 104</td></tr></table></div>
+<div class="warn">Bücher ordnen manche Artikel unterschiedlich ein. Schreib einen Satz Begründung dazu, dann passt es.</div>`},
+{id:"wer",cat:"Für wen",name:"Für wen gelten die Grundrechte?",
+kurz:"Menschenrechte gelten für jeden („Jeder“), Bürgerrechte nur für Deutsche („Alle Deutschen“), das Asylrecht (Art. 16a) speziell für Ausländer.",
+must:["Menschenrechte: Erkennungswort „Jeder“ + Beispiel","Bürgerrechte: „Alle Deutschen“ + Beispiel","Ausländerrecht: Art. 16a Asyl"],
+more:`<div class="tbl"><table><tr><th>Art</th><th>Beispiele</th></tr>
+<tr><td><b>Menschenrechte</b> (alle)</td><td>Art. 1, 2, 3, 4, 5, 10, 13, 14, 17, 103</td></tr>
+<tr><td><b>Bürgerrechte</b> (nur Deutsche, Art. 116)</td><td>Art. 8, 9 Abs. 1, 11, 12, 16, 20 Abs. 4, 33</td></tr>
+<tr><td><b>Ausländerrechte</b></td><td>Art. 16a Asylrecht</td></tr></table></div>
+<div class="tip">Markier „Alle Deutschen“ in deinem GG in einer eigenen Farbe, dann siehst du es morgen sofort. Ausländer sind bei Bürgerrechten über Art. 2 Abs. 1 geschützt.</div>`},
+{id:"afd",cat:"Parteiverbot",name:"AfD-Verbotsverfahren",
+kurz:"Über ein Parteiverbot entscheidet nur das Bundesverfassungsgericht mit Zweidrittelmehrheit, auf Antrag von Bundestag, Bundesrat oder Bundesregierung. Die Partei muss planvoll gegen die fdGO arbeiten und eine Chance auf Erfolg haben. Bei der AfD wird politisch gestritten, ob ein Antrag gestellt werden soll.",
+must:["Antragsteller + Entscheidung durch BVerfG mit 2/3","Art. 21 Abs. 2 sinngemäß wiedergeben","Konkretisierung 2017: planvoll + Potentialität","NPD 2003 und 2017: warum gescheitert","Je 2 Pro- und Contra-Argumente","Bundesrat: 35 von 69 Stimmen nötig"],
+more:`<div class="law">Art. 21 Abs. 2 GG: Parteien, die nach ihren Zielen oder nach dem Verhalten ihrer Anhänger darauf ausgehen, die freiheitliche demokratische Grundordnung zu beeinträchtigen oder zu beseitigen oder den Bestand der Bundesrepublik Deutschland zu gefährden, sind verfassungswidrig.</div>
+<p><b>Konkretisierung (NPD-Urteil 2017):</b> Ziele gegen Menschenwürde, Demokratie oder Rechtsstaat; planvolles, aktives Handeln (Gesinnung reicht nicht, Gewalt nicht nötig); <b>Potentialität</b>: konkrete Anhaltspunkte, dass die Partei Erfolg haben könnte.</p>
+<div class="tbl"><table><tr><th>Jahr</th><th>Was passierte</th></tr>
+<tr><td>1952 / 1956</td><td>SRP und KPD verboten</td></tr><tr><td>2003</td><td>NPD-Verfahren eingestellt: V-Leute in der Führung</td></tr><tr><td>2017</td><td>NPD verfassungsfeindlich, aber zu unbedeutend. Folge: Art. 21 Abs. 3</td></tr></table></div>
+<p><b>AfD (Stand Material):</b> Bundespartei Verdachtsfall; Einstufung „gesichert rechtsextremistisch“ vom VG Köln im Feb. 2026 vorläufig gestoppt. Gesichert rechtsextrem: Landesverbände Brandenburg, Thüringen, Sachsen, Sachsen-Anhalt, Niedersachsen, frühere JA.</p>
+<p><b>Positionen:</b> Grüne und Linke dafür; SPD will per Bund-Länder-Arbeitsgruppe prüfen; CDU/CSU-Spitze dagegen (Ausnahmen u. a. Wüst, Günther). Umfrage: 43 % für, 51 % gegen ein Verbot.</p>
+<p><b>Bundesrat:</b> 35 von 69 nötig. SPD-Länder 18, + BW 24, + Berlin 28, + Schleswig-Holstein 32, dann fehlt z. B. NRW.</p>
+<div class="tbl"><table><tr><th>Pro</th><th>Contra</th></tr>
+<tr><td>Mittel der wehrhaften Demokratie</td><td>Opferrolle für die AfD</td></tr>
+<tr><td>Verlust von Mandaten und Geld</td><td>Scheitern wäre ein Erfolg für die AfD</td></tr>
+<tr><td>AfD hat Einfluss (anders als NPD)</td><td>Einstellungen der Wähler bleiben</td></tr>
+<tr><td>Später wird es schwieriger</td><td>dauert Jahre, Ersatzpartei möglich</td></tr></table></div>
+<div class="tip">Bei der eigenen Stellungnahme zählt die Begründung, nicht welche Seite du wählst: These, zwei Argumente, ein Gegenargument, Fazit.</div>
+<div class="warn">Im Heft nachbessern: Frage 2 mit dem Wortlaut von Art. 21 Abs. 2 beantworten. Deine Notizen bei Frage 4 gehören eigentlich zu Frage 3.</div>`},
+{id:"sys",cat:"Politisches System",name:"Politisches System",
+kurz:"Deutschland ist eine parlamentarische Demokratie und ein Bundesstaat. Das Volk wählt den Bundestag, der den Kanzler wählt. Bundesrat, Bundespräsident und Bundesverfassungsgericht ergänzen und kontrollieren.",
+must:["Die 6 Verfassungsorgane nennen","Wer wählt wen?","Wahlrechtsgrundsätze + Erst-/Zweitstimme","Misstrauensvotum (Art. 67) und Vertrauensfrage (Art. 68)"],
+more:`<div class="tbl"><table><tr><th>Organ</th><th>Kurz</th></tr>
+<tr><td>Bundestag</td><td>630 Abgeordnete, Gesetze, wählt Kanzler, kontrolliert Regierung</td></tr>
+<tr><td>Bundesrat</td><td>Länder, 69 Stimmen, wirkt an Gesetzen mit</td></tr>
+<tr><td>Bundesregierung</td><td>Kanzler + Minister (Art. 65: Kanzler-, Ressort-, Kollegialprinzip)</td></tr>
+<tr><td>Bundespräsident</td><td>Staatsoberhaupt, 5 Jahre, von der Bundesversammlung gewählt</td></tr>
+<tr><td>BVerfG</td><td>16 Richter, je halb von Bundestag und Bundesrat gewählt</td></tr>
+<tr><td>Bundesversammlung</td><td>wählt nur den Bundespräsidenten</td></tr></table></div>
+<ul class="plain"><li>Wähler → Bundestag → Kanzler (Art. 63) → Minister (ernannt vom Bundespräsidenten)</li><li>Wähler → Landtage → Landesregierungen → Bundesrat</li><li>Bundestag + Ländervertreter = Bundesversammlung → Bundespräsident</li></ul>
+<p><b>Wahl (Art. 38):</b> allgemein, unmittelbar, frei, gleich, geheim. Erststimme = Kandidat, Zweitstimme = Partei (entscheidet die Sitzverteilung). 5 %-Hürde.</p>
+<p><b>Art. 67:</b> Kanzler nur abwählbar, wenn gleichzeitig ein Nachfolger gewählt wird (Lehre aus Weimar). <b>Art. 68:</b> Vertrauensfrage, bei Scheitern kann der Bundespräsident den Bundestag auflösen.</p>
+<p class="muted small">Die Buchabbildungen S. 32/36 zeigen vermutlich dieses „Wer wählt wen“-Schema.</p>`}
+];
+const TECHNIK=`<p>Immer <span class="mk">ganze Sätze</span> und Fundstelle im Format <b>Art. 21 Abs. 2 GG</b>.</p>
+<div class="tbl"><table><tr><th>Operator</th><th>Bedeutet</th></tr>
+<tr><td>Nennen</td><td>aufzählen, ohne Erklärung</td></tr><tr><td>Erklären</td><td>verständlich machen, mit Grund</td></tr><tr><td>Erläutern</td><td>erklären + Beispiel/Artikel</td></tr><tr><td>Zuordnen</td><td>in Gruppen sortieren, kurz begründen</td></tr><tr><td>Stellung nehmen</td><td>Pro, Contra, eigenes Fazit</td></tr></table></div>
+<h3>Markier-Plan für dein GG</h3>
+<div class="tbl"><table>
+<tr><td><span class="sw" style="background:#e9435b"></span>Rot</td><td>Wehrhafte Demokratie: 9 II, 18, 20 IV, 21 II–IV, 79 III</td></tr>
+<tr><td><span class="sw" style="background:#ffd84d"></span>Gelb</td><td>Freiheitsrechte</td></tr>
+<tr><td><span class="sw" style="background:#5aa9f0"></span>Blau</td><td>Unverletzlichkeitsrechte</td></tr>
+<tr><td><span class="sw" style="background:#5ccf8a"></span>Grün</td><td>Gleichheitsrechte</td></tr>
+<tr><td><span class="sw" style="background:#b98ae6"></span>Lila</td><td>Verfahrensrechte</td></tr>
+<tr><td><span class="sw" style="background:#ff9b4a"></span>Orange</td><td>nur die Wörter „Alle Deutschen“</td></tr></table></div>
+<p class="muted small">Merker an Art. 1, 20, 21, 38, 63, 67, 79. Ob du Merker beschriften darfst, kläre lieber vorher, Notizen im GG sind verboten.</p>`;
+
+/* ================= DATEN: Karten & Quiz ================= */
+const K=[
+["Grundgesetz","Wann trat das GG in Kraft?","Am 24.05.1949 (verkündet am 23.05.1949). Erarbeitet vom Parlamentarischen Rat in Bonn. Seit 03.10.1990 für ganz Deutschland."],
+["Grundgesetz","Was regelt Art. 1 GG?","Abs. 1: Menschenwürde ist unantastbar. Abs. 2: Bekenntnis zu den Menschenrechten. Abs. 3: Grundrechte binden Legislative, Exekutive und Judikative."],
+["Grundgesetz","Die Strukturprinzipien + Fundstelle","Art. 20: Demokratie, Rechtsstaat, Sozialstaat, Bundesstaat, Republik."],
+["Grundgesetz","Was bedeutet Volkssouveränität?","Art. 20 Abs. 2: Alle Staatsgewalt geht vom Volke aus (Wahlen, Abstimmungen, besondere Organe)."],
+["Grundgesetz","Wie wird das GG geändert?","Art. 79: 2/3 der Mitglieder des Bundestages und 2/3 der Stimmen des Bundesrates. Nie im Bereich von Abs. 3."],
+["Grundgesetz","Was schützt die Ewigkeitsklausel?","Art. 79 Abs. 3: Gliederung in Länder, Mitwirkung der Länder an der Gesetzgebung, Grundsätze der Art. 1 und 20."],
+["Grundgesetz","Formaler vs. materieller Rechtsstaat","Formal: Gesetze korrekt beschlossen. Materiell: Gesetze auch inhaltlich gerecht und verfassungsgemäß, Schutz vor „legalem Unrecht“."],
+["Grundgesetz","Menschenbild des GG","Eigenverantwortliche Persönlichkeit, aber gemeinschaftsbezogen, nie bloßes Objekt des Staates."],
+["Wehrhafte Demokratie","Was ist wehrhafte Demokratie?","Demokratie, die sich mit rechtlichen Mitteln gegen ihre Feinde verteidigt. Lehre aus dem Scheitern der Weimarer Republik."],
+["Wehrhafte Demokratie","Nenne 4 Elemente mit Artikel","Art. 79 Abs. 3 Ewigkeitsklausel, Art. 21 Abs. 2 Parteiverbot, Art. 9 Abs. 2 Vereinsverbot, Art. 18 Grundrechtsverwirkung (auch: Art. 20 Abs. 4 Widerstandsrecht, Verfassungsschutz)."],
+["Wehrhafte Demokratie","Art. 18 GG","Grundrechtsverwirkung: Wer Grundrechte zum Kampf gegen die fdGO missbraucht, verliert sie. Entscheidung durch das BVerfG."],
+["Wehrhafte Demokratie","Art. 9 Abs. 2 GG","Vereinsverbot für Vereine gegen Strafgesetze, verfassungsmäßige Ordnung oder Völkerverständigung."],
+["Wehrhafte Demokratie","Art. 20 Abs. 4 GG","Widerstandsrecht aller Deutschen gegen jeden, der die Ordnung beseitigen will, wenn keine andere Abhilfe möglich ist."],
+["Wehrhafte Demokratie","Was macht der Verfassungsschutz?","Beobachtet extremistische Bestrebungen (Verdachtsfall, gesichert extremistisch). Er verbietet nichts selbst."],
+["Wehrhafte Demokratie","Kern der fdGO (BVerfG 2017)","Menschenwürde, Demokratie, Rechtsstaat."],
+["Gewaltenteilung","Definition Gewaltenteilung","Staatsgewalt wird durch voneinander getrennte Träger ausgeübt, um Machtmissbrauch zu verhindern."],
+["Gewaltenteilung","Horizontale Gewaltenteilung","Auf einer Ebene: Legislative, Exekutive, Judikative."],
+["Gewaltenteilung","Vertikale Gewaltenteilung","Auf verschiedene Ebenen: Bund, Länder, Kommunen."],
+["Gewaltenteilung","Organe der 3 Gewalten im Bund","Legislative: Bundestag, Bundesrat. Exekutive: Bundesregierung. Judikative: BVerfG, oberste Gerichtshöfe."],
+["Gewaltenteilung","Gewaltenverschränkung","Gewalten sind verbunden: Bundestag wählt Kanzler, Minister sind Abgeordnete, Regierung bringt Gesetze ein."],
+["Grundrechte","Grundrechte sind vor allem …","Abwehrrechte gegen den Staat, Art. 1–19 GG."],
+["Grundrechte","Freiheitsrechte","Freiräume für eigenes Handeln, z. B. Art. 5 Meinungsfreiheit, Art. 8 Versammlung, Art. 12 Beruf."],
+["Grundrechte","Unverletzlichkeitsrechte","Geschützter persönlicher Bereich: Art. 2 Abs. 2 Leben/Körper, Art. 10 Briefgeheimnis, Art. 13 Wohnung."],
+["Grundrechte","Gleichheitsrechte","Keine ungerechtfertigte Ungleichbehandlung: Art. 3, Art. 6 Abs. 5, Art. 33, Art. 38 Abs. 1."],
+["Grundrechte","Verfahrensrechte","Faire Verfahren: Art. 19 Abs. 4 Rechtsweg, Art. 101 gesetzlicher Richter, Art. 103, Art. 104."],
+["Für wen","Menschenrechte","Für alle Menschen. Erkennbar an „Jeder“. Z. B. Art. 1, 2, 4, 5."],
+["Für wen","Bürgerrechte","Nur für Deutsche. Erkennbar an „Alle Deutschen“. Z. B. Art. 8, 11, 12."],
+["Für wen","Ausländerrechte","Asylrecht für politisch Verfolgte, Art. 16a."],
+["Für wen","Wo steht, wer Deutscher ist?","Art. 116 Abs. 1 GG."],
+["Parteiverbot","Wer darf ein Verbot beantragen?","Bundestag, Bundesrat, Bundesregierung."],
+["Parteiverbot","Wer entscheidet, mit welcher Mehrheit?","Nur das Bundesverfassungsgericht (Art. 21 Abs. 4), mit Zweidrittelmehrheit."],
+["Parteiverbot","Art. 21 Abs. 2 sinngemäß","Partei geht darauf aus, die fdGO zu beeinträchtigen oder zu beseitigen oder den Bestand der BRD zu gefährden."],
+["Parteiverbot","Konkretisierung 2017","Planvolles, aktives Handeln gegen die fdGO + Potentialität (konkrete Chance auf Erfolg)."],
+["Parteiverbot","NPD 2003","Eingestellt, weil zu viele V-Leute in der Parteiführung waren."],
+["Parteiverbot","NPD 2017","Verfassungsfeindlich, aber zu unbedeutend. Folge: Art. 21 Abs. 3 (Ausschluss von staatlichen Geldern)."],
+["Parteiverbot","Bundesrat-Mehrheit","35 von 69 Stimmen."],
+["Parteiverbot","Pro-Argumente (Material)","Mittel der wehrhaften Demokratie, Verlust von Mandaten und Geld, AfD hat echten Einfluss, später schwieriger."],
+["Parteiverbot","Contra-Argumente (Material)","Opferrolle, Scheitern wäre Erfolg für die AfD, Wählereinstellungen bleiben, dauert Jahre."],
+["Politisches System","Die 6 Verfassungsorgane","Bundestag, Bundesrat, Bundesregierung, Bundespräsident, BVerfG, Bundesversammlung."],
+["Politisches System","Wahlrechtsgrundsätze","Allgemein, unmittelbar, frei, gleich, geheim (Art. 38 Abs. 1)."],
+["Politisches System","Erst- und Zweitstimme","Erststimme: Wahlkreiskandidat. Zweitstimme: Partei, entscheidet über die Sitzverteilung."],
+["Politisches System","Konstruktives Misstrauensvotum","Art. 67: Kanzler nur abwählbar, wenn gleichzeitig ein Nachfolger gewählt wird."],
+["Politisches System","Vertrauensfrage","Art. 68: Bekommt der Kanzler keine Mehrheit, kann der Bundespräsident den Bundestag auflösen."],
+["Politisches System","Wer wählt den Bundespräsidenten?","Die Bundesversammlung, für 5 Jahre."],
+["Politisches System","Wer wählt den Bundeskanzler?","Der Bundestag, auf Vorschlag des Bundespräsidenten (Art. 63)."]
+];
+const Q=[
+["Grundgesetz","Wann trat das Grundgesetz in Kraft?",["24.05.1949","03.10.1990","08.05.1945"],0,"Verkündet am 23.05., in Kraft am 24.05.1949."],
+["Grundgesetz","Wer erarbeitete das Grundgesetz?",["Der Parlamentarische Rat","Die Alliierten","Der erste Bundestag"],0,"Vertreter der westdeutschen Länder in Bonn."],
+["Grundgesetz","Welches Prinzip steht NICHT in Art. 20?",["Marktwirtschaft","Sozialstaat","Bundesstaat"],0,"Das GG legt keine Wirtschaftsordnung fest."],
+["Grundgesetz","Welche Mehrheit braucht eine GG-Änderung?",["2/3 in Bundestag und Bundesrat","Einfache Mehrheit im Bundestag","Volksabstimmung"],0,"Art. 79 Abs. 2."],
+["Grundgesetz","Was ist nach Art. 79 Abs. 3 unabänderlich?",["Die Grundsätze von Art. 1 und 20","Die Zahl der Bundesländer","Die 5 %-Hürde"],0,"Plus Gliederung in Länder und deren Mitwirkung."],
+["Grundgesetz","Was verlangt der materielle Rechtsstaat zusätzlich?",["Gesetze müssen inhaltlich gerecht sein","Mehr Gesetze","Weniger Gerichte"],0,"Schutz vor „legalem Unrecht“."],
+["Grundgesetz","Die Grundrechte binden laut Art. 1 Abs. 3 …",["alle drei Gewalten","nur die Gerichte","nur Privatleute"],0,"Als unmittelbar geltendes Recht."],
+["Wehrhafte Demokratie","Aus welcher Erfahrung entstand die wehrhafte Demokratie?",["Scheitern der Weimarer Republik","Wiedervereinigung","Gründung der EU"],0,"Weimar wurde formal legal beseitigt."],
+["Wehrhafte Demokratie","Wer entscheidet über die Grundrechtsverwirkung (Art. 18)?",["Bundesverfassungsgericht","Bundespräsident","Verfassungsschutz"],0,"Art. 18 S. 2."],
+["Wehrhafte Demokratie","Wer hat das Widerstandsrecht nach Art. 20 Abs. 4?",["Alle Deutschen","Jeder Mensch","Nur Soldaten"],0,"Ein Bürgerrecht, nur als letztes Mittel."],
+["Wehrhafte Demokratie","Welches Element richtet sich gegen Vereine?",["Art. 9 Abs. 2","Art. 21 Abs. 2","Art. 79 Abs. 3"],0,"Vereinsverbot."],
+["Wehrhafte Demokratie","Was darf der Verfassungsschutz?",["Extremisten beobachten","Parteien verbieten","Urteile fällen"],0,"Er sammelt Informationen, verbietet aber nichts."],
+["Wehrhafte Demokratie","Kern der fdGO laut BVerfG 2017?",["Menschenwürde, Demokratie, Rechtsstaat","Sozialstaat, Bundesstaat, Republik","Freiheit, Gleichheit, Brüderlichkeit"],0,"NPD-Urteil 2017."],
+["Gewaltenteilung","Was ist vertikale Gewaltenteilung?",["Verteilung auf Bund, Länder, Kommunen","Legislative, Exekutive, Judikative","Trennung von Staat und Kirche"],0,"Verschiedene Ebenen im Bundesstaat."],
+["Gewaltenteilung","Zu welcher Gewalt gehört die Bundesregierung?",["Exekutive","Legislative","Judikative"],0,"Sie führt Gesetze aus."],
+["Gewaltenteilung","Zu welcher Gewalt gehört der Bundesrat?",["Legislative","Exekutive","Judikative"],0,"Er wirkt an der Gesetzgebung mit."],
+["Gewaltenteilung","Was ist ein Beispiel für Gewaltenverschränkung?",["Der Bundestag wählt den Kanzler","Richter sind unabhängig","Wahlen sind geheim"],0,"Die Legislative bestimmt den Chef der Exekutive."],
+["Gewaltenteilung","Wer gilt als Vordenker der Gewaltenteilung?",["Montesquieu","Karl Marx","Bismarck"],0,"„Vom Geist der Gesetze“, 1748."],
+["Grundrechte","Art. 10 (Briefgeheimnis) ist ein …",["Unverletzlichkeitsrecht","Gleichheitsrecht","Verfahrensrecht"],0,"Geschützter persönlicher Bereich."],
+["Grundrechte","Art. 103 Abs. 3 (keine Doppelbestrafung) ist ein …",["Verfahrensrecht","Freiheitsrecht","Gleichheitsrecht"],0,"Justizgrundrecht."],
+["Grundrechte","Art. 12 (Berufsfreiheit) ist ein …",["Freiheitsrecht","Verfahrensrecht","Unverletzlichkeitsrecht"],0,"Freie Wahl von Beruf und Ausbildung."],
+["Grundrechte","Art. 3 Abs. 2 (Männer und Frauen) ist ein …",["Gleichheitsrecht","Freiheitsrecht","Verfahrensrecht"],0,"Gleichberechtigung."],
+["Grundrechte","Art. 13 (Wohnung) ist ein …",["Unverletzlichkeitsrecht","Gleichheitsrecht","Verfahrensrecht"],0,"Die Wohnung ist geschützt."],
+["Grundrechte","In welchen Artikeln stehen die Grundrechte?",["Art. 1–19","Art. 20–37","Art. 38–69"],0,"Plus grundrechtsgleiche Rechte wie Art. 38, 101, 103."],
+["Für wen","Die Versammlungsfreiheit (Art. 8) ist ein …",["Bürgerrecht","Menschenrecht","Ausländerrecht"],0,"„Alle Deutschen …“"],
+["Für wen","Die Meinungsfreiheit (Art. 5) ist ein …",["Menschenrecht","Bürgerrecht","Ausländerrecht"],0,"„Jeder hat das Recht …“"],
+["Für wen","Welches ist ein Ausländerrecht?",["Art. 16a Asylrecht","Art. 11 Freizügigkeit","Art. 12 Berufsfreiheit"],0,"Für politisch Verfolgte."],
+["Für wen","Wo ist definiert, wer Deutscher ist?",["Art. 116","Art. 1","Art. 20"],0,"Art. 116 Abs. 1."],
+["Für wen","Die Berufsfreiheit (Art. 12) gilt laut Wortlaut für …",["alle Deutschen","jeden Menschen","nur EU-Bürger"],0,"Ausländer sind über Art. 2 Abs. 1 geschützt."],
+["Parteiverbot","Wer darf KEIN Parteiverbot beantragen?",["Bundespräsident","Bundestag","Bundesrat"],0,"Antragsberechtigt: Bundestag, Bundesrat, Bundesregierung."],
+["Parteiverbot","Wer entscheidet über ein Parteiverbot?",["Bundesverfassungsgericht","Bundestag","Verfassungsschutz"],0,"Art. 21 Abs. 4."],
+["Parteiverbot","Welche Mehrheit braucht das BVerfG?",["Zweidrittelmehrheit","Einfache Mehrheit","Einstimmigkeit"],0,"6 von 8 Richtern."],
+["Parteiverbot","Was bedeutet „Potentialität“?",["Die Partei könnte ihre Ziele tatsächlich erreichen","Die Partei hat viele Mitglieder","Die Partei wendet Gewalt an"],0,"Kriterium aus dem NPD-Urteil 2017."],
+["Parteiverbot","Warum scheiterte das NPD-Verfahren 2003?",["V-Leute in der Parteiführung","Die NPD war zu klein","Der Antrag kam zu spät"],0,"Verfahrenshindernis."],
+["Parteiverbot","Welche Parteien wurden verboten?",["SRP und KPD","NPD und DVU","KPD und NPD"],0,"1952 und 1956."],
+["Parteiverbot","Wie viele Stimmen braucht ein Antrag im Bundesrat?",["35 von 69","46 von 69","33 von 65"],0,"Absolute Mehrheit."],
+["Parteiverbot","Was entschied das VG Köln im Februar 2026?",["Die AfD darf vorerst nicht als gesichert rechtsextremistisch bezeichnet werden","Die AfD ist verboten","Die AfD verliert alle Gelder"],0,"Eilverfahren, Hauptsache offen."],
+["Politisches System","Wie viele Abgeordnete hat der Bundestag?",["630","598","736"],0,"Seit der Wahlrechtsreform."],
+["Politisches System","Wer wählt den Bundespräsidenten?",["Bundesversammlung","Das Volk","Bundesrat"],0,"Art. 54."],
+["Politisches System","Was ist das konstruktive Misstrauensvotum?",["Abwahl des Kanzlers durch Wahl eines Nachfolgers","Kanzler stellt Vertrauensfrage","Bundespräsident entlässt Kanzler"],0,"Art. 67."],
+["Politisches System","Welche Stimme entscheidet über die Sitzverteilung?",["Zweitstimme","Erststimme","Beide gleich"],0,"Verhältniswahl."],
+["Politisches System","Was ist KEIN Wahlrechtsgrundsatz?",["öffentlich","geheim","gleich"],0,"Die Wahl ist geheim."],
+["Politisches System","Wer hat die Richtlinienkompetenz?",["Bundeskanzler","Bundespräsident","Jeder Minister"],0,"Art. 65."],
+["Politisches System","Wer wählt den Bundeskanzler?",["Der Bundestag","Das Volk direkt","Der Bundesrat"],0,"Art. 63."]
+];
+
+/* ================= Fortschritt ================= */
+let known=new Set(store.get("known",[]));
+function rec(cat,ok){const a=store.get("ans",{});(a[cat]=a[cat]||[]).push(ok?1:0);if(a[cat].length>12)a[cat]=a[cat].slice(-12);store.set("ans",a);store.set("nAns",store.get("nAns",0)+1);refresh()}
+function parts(t){
+  const chk=store.get("chk",{})[t.id]||[];const c=chk.filter(Boolean).length/t.must.length;
+  const idx=K.map((k,i)=>i).filter(i=>K[i][0]===t.cat);const cards=idx.filter(i=>known.has(i)).length/idx.length;
+  const a=store.get("ans",{})[t.cat]||[];const acc=a.length?a.reduce((s,x)=>s+x,0)/a.length:0;const prac=acc*Math.min(a.length/6,1);
+  return {c,cards,prac,acc,n:a.length,m:Math.round(100*(.3*c+.3*cards+.4*prac)),cardsN:idx.filter(i=>known.has(i)).length,cardsT:idx.length,chkN:chk.filter(Boolean).length};
+}
+function level(m){return m>=75?["hi","sitzt"]:m>=40?["md","wird"]:["lo","noch offen"]}
+function colorFor(m){return m>=75?"var(--ok)":m>=40?"var(--mid)":"var(--bad)"}
+function probeBest(){const b=store.get("ppct",{});const v=Object.values(b);return v.length?Math.max(...v):0}
+
+/* ================= Übersicht ================= */
+let openT=null;
+function buildTopics(){
+  $("#topics").innerHTML=TOP.map((t,ti)=>`<div class="topic" id="t-${t.id}">
+  <button class="th" aria-expanded="false" data-t="${t.id}"><span class="no">${String(ti+1).padStart(2,"0")}</span><span class="nm">${t.name}</span><span class="pc" id="pc-${t.id}"></span>
+  <span class="sub"><span class="pill" id="pl-${t.id}"></span><span id="sb-${t.id}"></span></span>
+  <span class="bar"><i id="br-${t.id}"></i></span></button>
+  <div class="tb">
+    <div class="parts" id="pt-${t.id}"></div>
+    <p class="kurz">${t.kurz}</p>
+    <h3>Das musst du morgen können</h3>
+    <div class="check">${t.must.map((m,j)=>`<label><input type="checkbox" data-t="${t.id}" data-j="${j}"><span>${m}</span></label>`).join("")}</div>
+    <div class="row" style="margin-top:10px"><button class="btn sm" data-go="karten" data-cat="${t.cat}">Karten üben</button><button class="btn sm ghost" data-go="quiz" data-cat="${t.cat}">Quiz zum Thema</button><button class="btn sm ghost" data-mc="${t.id}">Mini-Check</button></div>
+    <div id="mc-${t.id}"></div>
+    <details class="more"><summary>Ausführlich nachlesen</summary><div class="in">${t.more}</div></details>
+  </div></div>`).join("");
+  const chk=store.get("chk",{});
+  document.querySelectorAll(".check input").forEach(i=>{i.checked=!!(chk[i.dataset.t]||[])[+i.dataset.j]});
+  $("#technikBody").innerHTML=TECHNIK;
+}
+function toggleTopic(el){const open=!el.classList.contains("open");document.querySelectorAll(".topic.open").forEach(x=>{x.classList.remove("open");x.querySelector(".th").setAttribute("aria-expanded","false")});if(open){el.classList.add("open");el.querySelector(".th").setAttribute("aria-expanded","true");setTimeout(()=>el.scrollIntoView({behavior:"smooth",block:"start"}),50)}}
+document.addEventListener("click",e=>{
+  const th=e.target.closest(".topic>.th");if(th){toggleTopic(th.parentElement);return}
+  const go=e.target.closest("[data-go]");if(go){const v=go.dataset.go,c=go.dataset.cat;
+    if(v==="karten"){kCat=c||"Alle";syncChips("#kcats",kCat);kBuild()}
+    if(v==="quiz"){qCat=c||"Alle";quizStart()}
+    if(v==="probe"&&go.dataset.k){pKey=go.dataset.k;syncChips("#pchoose",pKey,"k");pRender()}
+    if(v==="artikel"&&go.dataset.m){aMode=go.dataset.m;syncChips("#amodes",aMode,"m");aNext()}
+    location.hash="#"+v;return}
+  const op=e.target.closest("[data-open]");if(op){const el=$("#t-"+op.dataset.open);if(!el.classList.contains("open"))toggleTopic(el);else el.scrollIntoView({behavior:"smooth"});return}
+  const mc=e.target.closest("[data-mc]");if(mc){miniCheck(mc.dataset.mc);return}
+});
+document.addEventListener("change",e=>{const i=e.target;if(i.matches(".check input")){const chk=store.get("chk",{});(chk[i.dataset.t]=chk[i.dataset.t]||[])[+i.dataset.j]=i.checked;store.set("chk",chk);refresh()}});
+function miniCheck(id){const t=TOP.find(x=>x.id===id);const pool=Q.filter(q=>q[0]===t.cat);const q=pool[Math.floor(Math.random()*pool.length)];const order=shuffle([0,1,2]);
+  const box=$("#mc-"+id);box.innerHTML=`<div class="mc"><div class="qtext" style="font-size:1.05rem">${esc(q[1])}</div><div class="opts">${order.map(o=>`<button class="opt" data-o="${o}">${esc(q[2][o])}</button>`).join("")}</div><div class="fb"></div></div>`;
+  box.querySelector(".opts").onclick=e=>{const b=e.target.closest(".opt");if(!b||b.disabled)return;const ok=+b.dataset.o===q[3];
+    box.querySelectorAll(".opt").forEach(x=>{x.disabled=true;if(+x.dataset.o===q[3])x.classList.add("right")});if(!ok)b.classList.add("wrong");
+    box.querySelector(".fb").innerHTML=`<div class="expl">${ok?"<b>Richtig.</b> ":"<b>Nicht ganz.</b> "}${esc(q[4])}</div><button class="btn sm" data-mc="${id}">Noch eine Frage</button>`;rec(t.cat,ok)}}
+function refresh(){
+  const ps=TOP.map(t=>[t,parts(t)]);
+  ps.forEach(([t,p])=>{const lv=level(p.m);$("#pc-"+t.id).textContent=p.m+" %";const pl=$("#pl-"+t.id);pl.className="pill "+lv[0];pl.textContent=lv[1];
+    $("#sb-"+t.id).textContent=`${p.chkN}/${t.must.length} abgehakt, ${p.cardsN}/${p.cardsT} Karten`;const br=$("#br-"+t.id);br.style.width=Math.max(p.m,3)+"%";br.style.background=colorFor(p.m);
+    $("#pt-"+t.id).innerHTML=[["Checkliste",p.c,`${p.chkN}/${t.must.length}`],["Karten",p.cards,`${p.cardsN}/${p.cardsT}`],["Üben",p.prac,p.n?`${Math.round(p.acc*100)} % von ${p.n}`:"noch nichts"]].map(x=>`<div class="part">${x[0]}: ${x[2]}<div class="mini"><i style="width:${Math.round(x[1]*100)}%"></i></div></div>`).join("")});
+  const avg=ps.reduce((s,[,p])=>s+p.m,0)/ps.length;const pb=probeBest();const ready=Math.round(avg*.85+pb*.15);
+  $("#ready").textContent=ready;store.set("lastReady",ready);const fg=$("#ringfg");fg.style.strokeDashoffset=351.9*(1-ready/100);fg.style.stroke=colorFor(ready);
+  $("#verdict").textContent=ready<35?"Da ist noch Luft nach oben. Fang mit den drei Vorschlägen unten an, die bringen am meisten.":ready<65?"Gute Basis. Schließ heute Abend die Lücken in den roten und gelben Themen.":ready<85?"Du bist gut vorbereitet. Eine Probe-KA zum Abschluss festigt alles.":"Du bist bereit für morgen. Kurz wiederholen und dann früh schlafen.";
+  const chkAll=TOP.reduce((s,t)=>s+(store.get("chk",{})[t.id]||[]).filter(Boolean).length,0),chkT=TOP.reduce((s,t)=>s+t.must.length,0);
+  $("#counts").innerHTML=[[`${chkAll}/${chkT}`,"Checkpunkte"],[`${known.size}/${K.length}`,"Karten gewusst"],[store.get("nAns",0),"Fragen geübt"],[`${Object.keys(store.get("ppct",{})).length}/3`,"Probe-KAs"]].map(c=>`<div class="count"><b>${c[0]}</b><span>${c[1]}</span></div>`).join("");
+  const sugg=ps.slice().sort((a,b)=>a[1].m-b[1].m).filter(([,p])=>p.m<85).slice(0,3).map(([t,p])=>{
+    if(p.c<.5)return {txt:`${t.name}: Checkliste durchgehen`,sub:"Kurztext lesen und abhaken, was du kannst",attr:`data-open="${t.id}"`,go:"Öffnen"};
+    if(p.cards<.6)return {txt:`${t.name}: Karteikarten`,sub:`${p.cardsT-p.cardsN} Karten noch nicht gewusst`,attr:`data-go="karten" data-cat="${t.cat}"`,go:"Los"};
+    return {txt:`${t.name}: Quiz`,sub:p.n?`Trefferquote ${Math.round(p.acc*100)} %, da geht mehr`:"Noch keine Fragen geübt",attr:`data-go="quiz" data-cat="${t.cat}"`,go:"Los"}});
+  if(!Object.keys(store.get("ppct",{})).length&&avg>=40)sugg.push({txt:"Eine Probe-KA schreiben",sub:"30 Minuten, wie morgen",attr:`data-go="probe" data-k="A"`,go:"Los"});
+  const ms=store.get("media",{});
+  if(mediaOK.vid&&!ms.vid&&sugg.length<3)sugg.unshift({txt:"Video-Überblick ansehen",sub:"Guter Einstieg in alle Themen",attr:`data-go="medien"`,go:"Ansehen"});
+  else if(mediaOK.aud&&!ms.aud&&sugg.length<3)sugg.push({txt:"Podcast hören",sub:"Wiederholung zum Zuhören",attr:`data-go="medien"`,go:"Hören"});
+  if(!sugg.length)sugg.push({txt:"Alles im grünen Bereich",sub:"Zur Sicherheit noch eine Probe-KA",attr:`data-go="probe" data-k="C"`,go:"Los"});
+  $("#next").innerHTML=sugg.slice(0,3).map((s,i)=>`<button class="nx" ${s.attr}><span class="n">${i+1}</span><span>${s.txt}<small>${s.sub}</small></span><span class="go">${s.go}</span></button>`).join("");
+}
+$("#resetAll").onclick=()=>{if(!confirm("Wirklich den gesamten Fortschritt löschen?"))return;["known","ans","nAns","chk","ppct","qbest","abest","probe-A","probe-B","probe-C","media"].forEach(k=>store.set(k,null));known=new Set();buildTopics();kBuild();quizHome();pRender();refresh()};
+function syncChips(sel,val,key="c"){document.querySelectorAll(sel+" .chip").forEach(x=>x.setAttribute("aria-pressed",x.dataset[key]===val))}
+
+/* ================= Karten ================= */
+const KCATS=["Alle",...new Set(K.map(c=>c[0]))];
+let kCat="Alle",kDeck=[],kI=0;
+function kBuild(){const only=$("#konly").checked;kDeck=shuffle(K.map((c,i)=>i).filter(i=>(kCat==="Alle"||K[i][0]===kCat)&&(!only||!known.has(i))));kI=0;kShow()}
+function kShow(){$("#card").classList.remove("flip");const n=kDeck.length;
+  if(!n){$("#kq").textContent="Alles gewusst in dieser Kategorie.";$("#ka").textContent="";$("#kcat1").textContent=kCat;$("#kcount").textContent="0 Karten";$("#kprog").style.width="100%";return}
+  const c=K[kDeck[kI%n]];$("#kcat1").textContent=c[0];$("#kcat2").textContent=c[0];$("#kq").textContent=c[1];$("#ka").textContent=c[2];
+  $("#kcount").textContent=`Karte ${kI%n+1} von ${n}`;$("#kprog").style.width=((kI%n+1)/n*100)+"%"}
+$("#kcats").innerHTML=KCATS.map(c=>`<button class="chip" aria-pressed="${c==="Alle"}" data-c="${c}">${c}</button>`).join("");
+$("#kcats").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;kCat=b.dataset.c;syncChips("#kcats",kCat);kBuild()};
+$("#card").onclick=()=>$("#card").classList.toggle("flip");
+$("#card").onkeydown=e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();$("#card").classList.toggle("flip")}};
+$("#kyes").onclick=()=>{if(!kDeck.length)return;known.add(kDeck[kI%kDeck.length]);store.set("known",[...known]);if($("#konly").checked)kDeck.splice(kI%kDeck.length,1);else kI++;kShow();refresh()};
+$("#kno").onclick=()=>{if(!kDeck.length)return;known.delete(kDeck[kI%kDeck.length]);store.set("known",[...known]);kI++;kShow();refresh()};
+$("#kshuf").onclick=kBuild;$("#konly").onchange=kBuild;
+
+/* ================= Quiz ================= */
+const QCATS=["Alle",...new Set(Q.map(q=>q[0]))];
+let qCat="Alle",qSet=[],qI=0,qScore=0,qWrong=[];
+function quizStart(){const pool=Q.map((q,i)=>i).filter(i=>qCat==="Alle"||Q[i][0]===qCat);qSet=shuffle(pool).slice(0,Math.min(8,pool.length));qI=0;qScore=0;qWrong=[];quizQ()}
+function quizHome(){
+  $("#quiz").innerHTML=`<div class="chips" id="qcats">${QCATS.map(c=>`<button class="chip" aria-pressed="${c===qCat}" data-c="${c}">${c}</button>`).join("")}</div>
+  <div class="sheet"><p>Kurze Runden mit 8 Fragen und je 3 Antworten. Jede Antwort zählt für deinen Themen-Fortschritt.</p><button class="btn" id="qgo">Runde starten</button>
+  <p class="muted" style="margin-top:12px">Bestes Ergebnis: ${store.get("qbest",0)} %</p></div>`;
+  $("#qcats").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;qCat=b.dataset.c;quizHome()};$("#qgo").onclick=quizStart}
+function quizQ(){const q=Q[qSet[qI]];const order=shuffle([0,1,2]);
+  $("#quiz").innerHTML=`<div class="sheet"><div class="qhead"><span>${q[0]}</span><span>${qI+1} / ${qSet.length}</span></div><div class="progress"><i style="width:${qI/qSet.length*100}%"></i></div>
+  <div class="qtext">${esc(q[1])}</div><div class="opts">${order.map(o=>`<button class="opt" data-o="${o}">${esc(q[2][o])}</button>`).join("")}</div><div id="qfb"></div></div>`;
+  $("#quiz .opts").onclick=e=>{const b=e.target.closest(".opt");if(!b||b.disabled)return;const ok=+b.dataset.o===q[3];
+    $("#quiz").querySelectorAll(".opt").forEach(x=>{x.disabled=true;if(+x.dataset.o===q[3])x.classList.add("right")});
+    if(ok)qScore++;else{b.classList.add("wrong");qWrong.push(qSet[qI])}rec(q[0],ok);
+    $("#qfb").innerHTML=`<div class="expl">${ok?"<b>Richtig.</b> ":"<b>Nicht ganz.</b> "}${esc(q[4])}</div><button class="btn" id="qnext">${qI+1<qSet.length?"Weiter":"Ergebnis"}</button>`;
+    $("#qnext").onclick=()=>{qI++;qI<qSet.length?quizQ():quizEnd()};$("#qnext").focus()}}
+function quizEnd(){const pct=Math.round(qScore/qSet.length*100);if(pct>store.get("qbest",0))store.set("qbest",pct);
+  $("#quiz").innerHTML=`<div class="sheet"><div class="big">${qScore} / ${qSet.length}</div><p>${pct>=85?"Stark, das sitzt.":pct>=60?"Gut. Schau dir unten die verpassten Fragen an.":"Lies das Thema in der Übersicht kurz nach und versuch es nochmal."}</p>
+  <div class="row"><button class="btn" id="qagain">Neue Runde</button><a class="btn ghost" href="#lernen" style="text-decoration:none">Zur Übersicht</a></div>
+  ${qWrong.length?`<div class="review"><h3>Zum Merken</h3>${qWrong.map(i=>`<div><b>${esc(Q[i][1])}</b><br>${esc(Q[i][2][Q[i][3]])}</div>`).join("")}</div>`:""}</div>`;
+  $("#qagain").onclick=quizStart}
+quizHome();
+
+/* ================= Artikel ================= */
+const ART=[["Eine Schülergruppe will auf dem Marktplatz demonstrieren.","Art. 8"],["Die Polizei will ohne Anordnung eine Wohnung durchsuchen.","Art. 13"],["Eine Zeitung kritisiert die Regierung scharf.","Art. 5"],["Frauen werden für gleiche Arbeit schlechter bezahlt.","Art. 3"],["Jemand soll für dieselbe Tat zweimal bestraft werden.","Art. 103"],["Eine Arbeitnehmerin tritt einer Gewerkschaft bei.","Art. 9"],["Ein Azubi zieht von Bayern nach Hamburg.","Art. 11"],["Du wählst BWL statt einer Bankausbildung.","Art. 12"],["Eine Behörde liest heimlich Chatnachrichten mit.","Art. 10"],["Ein politisch Verfolgter sucht Schutz in Deutschland.","Art. 16a"],["Ein Bürger schreibt an den Petitionsausschuss.","Art. 17"],["Ein Verdächtiger soll gefoltert werden.","Art. 1"],["Jemand klagt gegen einen Bescheid des Finanzamts.","Art. 19"],["Eine verfassungsfeindliche Partei soll verboten werden.","Art. 21"],["Der Bundestag wählt den Kanzler ab und gleichzeitig einen neuen.","Art. 67"],["Eine Mehrheit will die Bundesländer abschaffen.","Art. 79"],["Eine Schülerin wechselt ihre Religion.","Art. 4"],["Ein Grundstück wird für eine Bahnstrecke enteignet.","Art. 14"],["Bei der Bundestagswahl zählt jede Stimme gleich.","Art. 38"],["Ein Extremist soll seine Pressefreiheit verlieren.","Art. 18"],["Der Kanzler stellt die Vertrauensfrage.","Art. 68"],["Die Bundesversammlung wählt das Staatsoberhaupt.","Art. 54"]];
+const ARTPOOL=[...new Set(ART.map(a=>a[1]))];
+const GRP=[["Art. 4 – Glaubensfreiheit","Freiheitsrecht"],["Art. 5 – Meinungsfreiheit","Freiheitsrecht"],["Art. 8 – Versammlungsfreiheit","Freiheitsrecht"],["Art. 11 – Freizügigkeit","Freiheitsrecht"],["Art. 12 – Berufsfreiheit","Freiheitsrecht"],["Art. 2 Abs. 2 – Leben, körperliche Unversehrtheit","Unverletzlichkeitsrecht"],["Art. 10 – Briefgeheimnis","Unverletzlichkeitsrecht"],["Art. 13 – Wohnung","Unverletzlichkeitsrecht"],["Art. 3 Abs. 1 – Gleichheit vor dem Gesetz","Gleichheitsrecht"],["Art. 3 Abs. 2 – Männer und Frauen","Gleichheitsrecht"],["Art. 38 Abs. 1 – gleiche Wahl","Gleichheitsrecht"],["Art. 19 Abs. 4 – Rechtsweggarantie","Verfahrensrecht"],["Art. 101 – gesetzlicher Richter","Verfahrensrecht"],["Art. 103 – rechtliches Gehör","Verfahrensrecht"],["Art. 104 – Freiheitsentziehung","Verfahrensrecht"]];
+const WHO=[["Art. 1 – Menschenwürde","Menschenrecht"],["Art. 2 – Persönlichkeit","Menschenrecht"],["Art. 4 – Glaubensfreiheit","Menschenrecht"],["Art. 5 – Meinungsfreiheit","Menschenrecht"],["Art. 10 – Briefgeheimnis","Menschenrecht"],["Art. 13 – Wohnung","Menschenrecht"],["Art. 103 – rechtliches Gehör","Menschenrecht"],["Art. 8 – Versammlung","Bürgerrecht"],["Art. 9 Abs. 1 – Vereine","Bürgerrecht"],["Art. 11 – Freizügigkeit","Bürgerrecht"],["Art. 12 – Berufsfreiheit","Bürgerrecht"],["Art. 20 Abs. 4 – Widerstand","Bürgerrecht"],["Art. 16a – Asyl","Ausländerrecht"]];
+let aMode="art",aStreak=0,aRight=0,aTotal=0;
+$("#amodes").innerHTML=[["art","Welcher Artikel?"],["grp","Welche Gruppe?"],["who","Für wen?"]].map(m=>`<button class="chip" aria-pressed="${m[0]===aMode}" data-m="${m[0]}">${m[1]}</button>`).join("");
+$("#amodes").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;aMode=b.dataset.m;syncChips("#amodes",aMode,"m");aStreak=aRight=aTotal=0;aNext()};
+function aNext(){let it,prompt,correct,opts,cat;
+  if(aMode==="art"){it=ART[Math.floor(Math.random()*ART.length)];correct=it[1];opts=shuffle([correct,...shuffle(ARTPOOL.filter(x=>x!==correct)).slice(0,2)]);cat="Grundrechte"}
+  else if(aMode==="grp"){it=GRP[Math.floor(Math.random()*GRP.length)];correct=it[1];opts=["Freiheitsrecht","Unverletzlichkeitsrecht","Gleichheitsrecht","Verfahrensrecht"];cat="Grundrechte"}
+  else{it=WHO[Math.floor(Math.random()*WHO.length)];correct=it[1];opts=["Menschenrecht","Bürgerrecht","Ausländerrecht"];cat="Für wen"}
+  prompt=it[0];
+  $("#artikel").innerHTML=`<div class="sheet"><div class="qtext">${esc(prompt)}</div><div class="opts">${opts.map(o=>`<button class="opt" data-o="${esc(o)}">${esc(o)}</button>`).join("")}</div><div id="afb"></div>
+  <p class="muted">Serie: <b>${aStreak}</b>  |  ${aRight} von ${aTotal} richtig  |  Rekord: ${store.get("abest",0)}</p></div>`;
+  $("#artikel .opts").onclick=e=>{const b=e.target.closest(".opt");if(!b||b.disabled)return;aTotal++;const ok=b.dataset.o===correct;
+    $("#artikel").querySelectorAll(".opt").forEach(x=>{x.disabled=true;if(x.dataset.o===correct)x.classList.add("right")});
+    if(ok){aRight++;aStreak++;if(aStreak>store.get("abest",0))store.set("abest",aStreak)}else{b.classList.add("wrong");aStreak=0}rec(cat,ok);
+    $("#afb").innerHTML=`<button class="btn" id="anext">Nächste</button>`;$("#anext").onclick=aNext;$("#anext").focus()}}
+aNext();
+
+/* ================= Probe-KA ================= */
+const P={
+"A":{t:"Probe-KA A: Werte, Wehrhaftigkeit, Parteiverbot",tasks:[
+{q:"Nennen Sie die fünf Strukturprinzipien des Grundgesetzes mit Fundstelle.",p:3,h:"Schau in Art. 20 Abs. 1. Das fünfte Prinzip steckt im Wort „Bundesrepublik“.",eh:[["Art. 20 GG angegeben",1],["Demokratie, Rechtsstaat, Sozialstaat",1],["Bundesstaat, Republik",1]],m:"Die Strukturprinzipien stehen in Art. 20 GG. Die Bundesrepublik ist eine Demokratie, ein Rechtsstaat, ein Sozialstaat, ein Bundesstaat und eine Republik."},
+{q:"Erklären Sie den Begriff „wehrhafte Demokratie“ und nennen Sie zwei Elemente mit Fundstelle.",p:5,h:"Denk an Weimar. Elemente findest du z. B. in Art. 21 und Art. 79.",eh:[["Demokratie verteidigt sich mit rechtlichen Mitteln gegen ihre Feinde",1.5],["Lehre aus Weimar",1],["Element 1 mit Artikel",1.25],["Element 2 mit Artikel",1.25]],m:"Wehrhafte Demokratie bedeutet, dass sich die Demokratie mit rechtlichen Mitteln gegen Feinde verteidigt, die sie abschaffen wollen. Das ist eine Lehre aus der Weimarer Republik, die auf legalem Weg beseitigt wurde. Ein Element ist das Parteiverbot nach Art. 21 Abs. 2 GG. Ein weiteres ist die Ewigkeitsklausel nach Art. 79 Abs. 3 GG."},
+{q:"Erklären Sie den Unterschied zwischen horizontaler und vertikaler Gewaltenteilung.",p:4,h:"Horizontal = auf einer Ebene, vertikal = zwischen den Ebenen.",eh:[["Horizontal: Legislative, Exekutive, Judikative",1.5],["Beispiel horizontal",0.5],["Vertikal: Bund, Länder, Kommunen",1.5],["Beispiel vertikal",0.5]],m:"Bei der horizontalen Gewaltenteilung wird die Macht auf einer Ebene auf Legislative, Exekutive und Judikative verteilt, zum Beispiel Bundestag, Bundesregierung und Bundesverfassungsgericht. Bei der vertikalen Gewaltenteilung wird die Macht auf Bund, Länder und Kommunen verteilt, zum Beispiel ist die Schule Ländersache."},
+{q:"Ordnen Sie Art. 8 und Art. 10 GG einer Grundrechtsgruppe zu und geben Sie an, ob es Menschen- oder Bürgerrechte sind.",p:4,h:"Lies den ersten Satz beider Artikel: steht da „Jeder“ oder „Alle Deutschen“?",eh:[["Art. 8: Freiheitsrecht",1],["Art. 8: Bürgerrecht („Alle Deutschen“)",1],["Art. 10: Unverletzlichkeitsrecht",1],["Art. 10: Menschenrecht",1]],m:"Die Versammlungsfreiheit nach Art. 8 GG ist ein Freiheitsrecht und ein Bürgerrecht, weil sie nur allen Deutschen zusteht. Das Briefgeheimnis nach Art. 10 GG ist ein Unverletzlichkeitsrecht und ein Menschenrecht, das für jeden gilt."},
+{q:"Nennen Sie, wer ein Parteiverbot beantragen darf und wer darüber entscheidet.",p:4,h:"Drei Verfassungsorgane beantragen, eines entscheidet (Art. 21 Abs. 4).",eh:[["Bundestag, Bundesrat, Bundesregierung",2],["Bundesverfassungsgericht entscheidet",1.5],["mit Zweidrittelmehrheit",0.5]],m:"Ein Parteiverbot können der Bundestag, der Bundesrat oder die Bundesregierung beantragen. Darüber entscheidet nach Art. 21 Abs. 4 GG allein das Bundesverfassungsgericht, und zwar mit Zweidrittelmehrheit."}]},
+"B":{t:"Probe-KA B: Verfassungskern, Rechtsstaat, Grundrechte",tasks:[
+{q:"Nennen Sie, was die Ewigkeitsklausel (Art. 79 Abs. 3 GG) schützt.",p:3,h:"Drei Dinge stehen direkt im Artikel.",eh:[["Gliederung des Bundes in Länder",1],["Mitwirkung der Länder an der Gesetzgebung",1],["Grundsätze der Art. 1 und 20",1]],m:"Die Ewigkeitsklausel schützt die Gliederung des Bundes in Länder, die grundsätzliche Mitwirkung der Länder an der Gesetzgebung und die Grundsätze der Art. 1 und 20 GG."},
+{q:"Unterscheiden Sie einen formalen und einen materiellen Rechtsstaat.",p:4,h:"Formal = Form/Verfahren, materiell = Inhalt. Stichwort „legales Unrecht“.",eh:[["Formal: Gesetze korrekt beschlossen",1.5],["Materiell: Gesetze inhaltlich verfassungsgemäß/gerecht",1.5],["Schutz vor „legalem Unrecht“",1]],m:"Im formalen Rechtsstaat handelt der Staat nach Gesetzen, die formal korrekt beschlossen wurden. Im materiellen Rechtsstaat müssen die Gesetze zusätzlich inhaltlich der Verfassung und den Menschenrechten entsprechen. So wird „legales Unrecht“ verhindert."},
+{q:"Ordnen Sie Bundestag, Bundesregierung, Bundesverfassungsgericht und Landtag den drei Gewalten zu.",p:4,h:"Zwei der vier gehören zur selben Gewalt.",eh:[["Bundestag: Legislative",1],["Bundesregierung: Exekutive",1],["BVerfG: Judikative",1],["Landtag: Legislative",1]],m:"Der Bundestag und der Landtag gehören zur Legislative. Die Bundesregierung gehört zur Exekutive. Das Bundesverfassungsgericht gehört zur Judikative."},
+{q:"Erklären Sie eine Grundrechtsgruppe und nennen Sie zwei Beispiele mit Artikel.",p:4,h:"Am einfachsten: Freiheitsrechte mit Art. 5 und Art. 12.",eh:[["Gruppe richtig erklärt",2],["Beispiel 1 mit Artikel",1],["Beispiel 2 mit Artikel",1]],m:"Freiheitsrechte sichern dem Einzelnen Freiräume, in denen der Staat ihm nichts vorschreiben darf. Beispiele sind die Meinungsfreiheit nach Art. 5 GG und die Berufsfreiheit nach Art. 12 GG."},
+{q:"Erklären Sie, warum das NPD-Verbot 2017 scheiterte.",p:5,h:"Die NPD war verfassungsfeindlich, aber …? Stichwort Potentialität.",eh:[["NPD war verfassungsfeindlich",1.5],["aber zu unbedeutend / keine Potentialität",2],["Folge: Art. 21 Abs. 3 (keine staatlichen Gelder)",1.5]],m:"Das Bundesverfassungsgericht stellte 2017 fest, dass die NPD verfassungsfeindliche Ziele verfolgt. Ein Verbot lehnte es trotzdem ab, weil die Partei zu unbedeutend war, um ihre Ziele tatsächlich zu erreichen. Als Folge wurde Art. 21 Abs. 3 GG eingeführt, nach dem solche Parteien von staatlichen Geldern ausgeschlossen werden können."}]},
+"C":{t:"Probe-KA C: Politisches System & AfD-Debatte",tasks:[
+{q:"Nennen Sie vier Verfassungsorgane des Bundes.",p:4,h:"Zwei davon beginnen mit „Bundes-“ und enden auf „-tag“ bzw. „-rat“.",eh:[["Je richtiges Organ 1 Punkt (max. 4)",4]],m:"Verfassungsorgane des Bundes sind zum Beispiel der Bundestag, der Bundesrat, die Bundesregierung und der Bundespräsident. Außerdem gehören das Bundesverfassungsgericht und die Bundesversammlung dazu."},
+{q:"Erklären Sie das konstruktive Misstrauensvotum.",p:4,h:"Art. 67. Was muss der Bundestag gleichzeitig tun?",eh:[["Art. 67 GG",0.5],["Abwahl nur durch Wahl eines Nachfolgers",2],["Grund: stabile Regierung / Lehre aus Weimar",1.5]],m:"Nach Art. 67 GG kann der Bundestag den Kanzler nur abwählen, wenn er gleichzeitig einen Nachfolger mit Mehrheit wählt. Damit soll verhindert werden, dass eine Regierung gestürzt wird, ohne dass eine neue gebildet werden kann, wie in der Weimarer Republik."},
+{q:"Erklären Sie den Unterschied zwischen Menschen- und Bürgerrechten mit je einem Beispiel.",p:4,h:"„Jeder“ vs. „Alle Deutschen“.",eh:[["Menschenrechte gelten für alle",1],["Beispiel (z. B. Art. 5)",1],["Bürgerrechte nur für Deutsche",1],["Beispiel (z. B. Art. 8)",1]],m:"Menschenrechte gelten für alle Menschen in Deutschland, zum Beispiel die Meinungsfreiheit nach Art. 5 GG. Bürgerrechte gelten nur für Deutsche, zum Beispiel die Versammlungsfreiheit nach Art. 8 GG."},
+{q:"Nennen Sie je zwei Argumente für und gegen ein AfD-Verbotsverfahren.",p:4,h:"Pro: wehrhafte Demokratie, Geld. Contra: Opferrolle, Scheitern.",eh:[["Pro-Argument 1",1],["Pro-Argument 2",1],["Contra-Argument 1",1],["Contra-Argument 2",1]],m:"Für ein Verfahren spricht, dass es ein Mittel der wehrhaften Demokratie ist und die AfD ihre Mandate und staatlichen Gelder verlieren würde. Dagegen spricht, dass sich die AfD als Opfer darstellen könnte und ein gescheitertes Verfahren ein großer Erfolg für sie wäre."},
+{q:"Erläutern Sie, wie viele Stimmen im Bundesrat für einen Verbotsantrag nötig sind und warum eine Mehrheit laut Material nicht unrealistisch ist.",p:4,h:"69 Stimmen insgesamt. Die Rechnung im SZ-Text endet bei 32.",eh:[["35 von 69 Stimmen",1.5],["Rechnung bis ca. 32 Stimmen (SPD-Länder, BW, Berlin, SH)",1.5],["Es fehlt nur noch ein Land, z. B. NRW",1]],m:"Für einen Antrag im Bundesrat braucht man 35 von 69 Stimmen. Die SPD-geführten Länder ohne Union, Baden-Württemberg, Berlin und Schleswig-Holstein kämen zusammen auf 32 Stimmen. Es würde also nur noch ein weiteres Land fehlen, zum Beispiel Nordrhein-Westfalen."}]}
+};
+function notenpunkte(p){const t=[[96,15],[91,14],[86,13],[81,12],[76,11],[71,10],[66,9],[61,8],[56,7],[51,6],[46,5],[41,4],[34,3],[27,2],[20,1]];for(const[g,n]of t)if(p>=g)return n;return 0}
+let pKey="A",pTimer=null;
+$("#pchoose").innerHTML=Object.keys(P).map(k=>`<button class="chip" aria-pressed="${k===pKey}" data-k="${k}">KA ${k}</button>`).join("");
+$("#pchoose").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;pKey=b.dataset.k;syncChips("#pchoose",pKey,"k");pRender()};
+function pRender(){clearInterval(pTimer);const ka=P[pKey];const saved=store.get("probe-"+pKey,{})||{};const best=(store.get("ppct",{})||{})[pKey];
+  $("#probe").innerHTML=`<div class="sheet" style="margin-bottom:14px"><h3 style="margin-top:0">${ka.t}</h3><p class="muted">${best!=null?`Dein bestes Ergebnis: ${best} % (≈ ${notenpunkte(best)} NP).`:"Noch nicht geschrieben."}</p>
+   <div class="row"><button class="btn" id="pstart">Timer starten (30 Min.)</button><span class="timer" id="ptime"></span></div></div>
+   ${ka.tasks.map((t,i)=>`<div class="task" id="pt${i}"><div class="th2"><span>${i+1}. ${esc(t.q)}</span><span class="pts">${t.p} P.</span></div>
+   <div class="hint">Tipp: ${esc(t.h)}</div>
+   <textarea data-i="${i}" placeholder="Deine Antwort in ganzen Sätzen …">${esc(saved[i]||"")}</textarea>
+   <div class="row" style="margin-top:8px"><button class="btn ghost sm phint" data-i="${i}">Tipp zeigen</button><button class="btn ghost sm pshow" data-i="${i}">Lösung aufdecken</button></div>
+   <div class="sol"><b>Hak ab, was du hast</b><div class="eh">${t.eh.map(e=>`<label><input type="checkbox" data-p="${e[1]}"><span>${esc(e[0])}</span><span class="p">${String(e[1]).replace(".",",")} P.</span></label>`).join("")}</div>
+   <div class="model"><b>Musterlösung</b><br>${esc(t.m)}</div></div></div>`).join("")}
+   <div class="row"><button class="btn" id="pall">Abgeben und alle Lösungen zeigen</button><button class="btn ghost" id="pclear">Antworten löschen</button></div>
+   <div class="result" id="pres"><span id="presT"></span><b id="presN"></b></div>`;
+  $("#probe").oninput=e=>{if(e.target.tagName==="TEXTAREA"){const s=store.get("probe-"+pKey,{})||{};s[e.target.dataset.i]=e.target.value;store.set("probe-"+pKey,s)}};
+  $("#probe").onchange=e=>{if(e.target.type==="checkbox")pScore()};
+  $("#probe").querySelectorAll(".phint").forEach(b=>b.onclick=()=>{$("#pt"+b.dataset.i).classList.add("hint-on");b.remove()});
+  $("#probe").querySelectorAll(".pshow").forEach(b=>b.onclick=()=>{$("#pt"+b.dataset.i).classList.add("show");b.remove();pScore()});
+  $("#pall").onclick=()=>{clearInterval(pTimer);$("#probe").querySelectorAll(".task").forEach(t=>t.classList.add("show"));$("#probe").querySelectorAll(".pshow").forEach(b=>b.remove());pScore();$("#pt0").scrollIntoView({behavior:"smooth"})};
+  $("#pclear").onclick=()=>{store.set("probe-"+pKey,{});pRender()};
+  $("#pstart").onclick=()=>{clearInterval(pTimer);let left=1800;const tick=()=>{$("#ptime").textContent=left<=0?"Zeit um!":`${Math.floor(left/60)}:${String(left%60).padStart(2,"0")}`;if(left<=0)clearInterval(pTimer);left--};tick();pTimer=setInterval(tick,1000)}}
+function pScore(){const ka=P[pKey];const total=ka.tasks.reduce((s,t)=>s+t.p,0);let got=0;$("#probe").querySelectorAll(".eh input:checked").forEach(c=>got+=+c.dataset.p);
+  const pct=Math.round(got/total*100);$("#pres").classList.add("on");$("#presT").textContent=`${String(got).replace(".",",")} von ${total} Punkten (${pct} %)`;$("#presN").textContent=`≈ ${notenpunkte(pct)} NP`;
+  const b=store.get("ppct",{})||{};if(b[pKey]==null||pct>b[pKey]){b[pKey]=pct;store.set("ppct",b)}refresh()}
+
+/* ================= Navigation ================= */
+const VIEWS=["lernen","medien","karten","quiz","artikel","probe"];
+function route(){const v=VIEWS.includes(location.hash.slice(1))?location.hash.slice(1):"lernen";
+  VIEWS.forEach(x=>$("#v-"+x).classList.toggle("on",x===v));
+  document.querySelectorAll("nav.tabs a").forEach(a=>{if(a.dataset.v===v)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  if(v==="lernen")refresh();window.scrollTo(0,0)}
+window.addEventListener("hashchange",route);
+
+/* ================= Persönlich & Medien ================= */
+const mediaOK={aud:false,vid:false};
+function persona(){const n=store.get("name","");const d=store.get("kadate","");$("#pname").value=n;$("#pdate").value=d;
+  $("#hello").textContent=n?`Hallo ${n}, bereit für die Kurzarbeit?`:"Bereit für die Kurzarbeit?";
+  const kp=$("#kpill");if(d){const t=new Date();t.setHours(0,0,0,0);const k=new Date(d+"T00:00:00");const diff=Math.round((k-t)/864e5);
+    kp.textContent=diff<0?"Kurzarbeit geschafft":diff===0?"Kurzarbeit ist heute, viel Erfolg!":diff===1?"Kurzarbeit ist morgen":`Noch ${diff} Tage bis zur Kurzarbeit`;kp.hidden=false}else kp.hidden=true}
+$("#pname").oninput=e=>{store.set("name",e.target.value.trim());persona()};
+$("#pdate").onchange=e=>{store.set("kadate",e.target.value);persona()};
+function wireMedia(id,box,key){const el=$("#"+id);const srcs=[...el.querySelectorAll("source")];let fails=0;
+  const none=()=>{$("#"+box).classList.add("none")};
+  srcs.forEach(s=>s.addEventListener("error",()=>{if(++fails>=srcs.length)none()}));
+  el.addEventListener("loadedmetadata",()=>{mediaOK[key]=true;$("#"+box).classList.remove("none");refresh()});
+  setTimeout(()=>{if(el.networkState===3)none()},2500);
+  const mark=()=>{const m=store.get("media",{});if(!m[key]){m[key]=1;store.set("media",m);$("#d-"+(key==="aud"?"audio":"video")).textContent="✓ gesehen".replace("gesehen",key==="aud"?"gehört":"gesehen");refresh()}};
+  el.addEventListener("timeupdate",()=>{if(el.duration&&el.currentTime/el.duration>.8)mark()});
+  if(store.get("media",{})[key])$("#d-"+(key==="aud"?"audio":"video")).textContent=key==="aud"?"✓ gehört":"✓ gesehen"}
+$("#speed").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;$("#aud").playbackRate=+b.dataset.r;$("#speed").querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x===b))};
+wireMedia("aud","m-audio","aud");wireMedia("vid","m-video","vid");persona();
+
+/* ===== Profile-UI ===== */
+function pctOf(id){try{const v=lsGet(pre(id)+"lastReady");return v?JSON.parse(v):null}catch(e){return null}}
+function renderProfiles(){const cur=profiles.find(p=>p.id===active);$("#profName").textContent=cur.name||"Profil";
+  $("#plist").innerHTML=profiles.map(p=>{const r=pctOf(p.id);return `<div class="prow${p.id===active?" on":""}"><button class="pn" data-sw="${p.id}">${esc(p.name||"Ohne Namen")}<small>${p.id===active?"aktiv":"wechseln"}${r!=null?`, ${r} % bereit`:""}</small></button><button class="x" data-del="${p.id}" aria-label="Profil löschen">✕</button></div>`}).join("")}
+$("#profBtn").onclick=()=>{const p=$("#profPanel");p.hidden=!p.hidden;$("#profBtn").setAttribute("aria-expanded",!p.hidden);renderProfiles()};
+$("#plist").onclick=e=>{const sw=e.target.closest("[data-sw]"),del=e.target.closest("[data-del]");
+  if(sw&&sw.dataset.sw!==active){active=sw.dataset.sw;saveProfiles();location.reload()}
+  if(del){const p=profiles.find(x=>x.id===del.dataset.del);if(!confirm(`Profil „${p.name||"Ohne Namen"}“ und seinen Fortschritt löschen?`))return;
+    lsKeys().filter(k=>k.startsWith(pre(p.id))).forEach(k=>lsSet(k,null));profiles=profiles.filter(x=>x.id!==p.id);
+    if(!profiles.length)profiles=[{id:newId(),name:""}];if(p.id===active){active=profiles[0].id;saveProfiles();location.reload()}else{saveProfiles();renderProfiles()}}};
+$("#profNew").onclick=()=>{const n=prompt("Name für das neue Profil:","");if(n===null)return;const id=newId();profiles.push({id,name:n.trim().slice(0,30)});active=id;saveProfiles();lsSet(pre(id)+"name",JSON.stringify(n.trim().slice(0,30)));location.reload()};
+$("#pname").oninput=e=>{const v=e.target.value.trim();store.set("name",v);const c=profiles.find(p=>p.id===active);c.name=v;saveProfiles();persona();renderProfiles()};
+$("#expBtn").onclick=()=>{const data={};lsKeys().filter(k=>k.startsWith(pre(active))).forEach(k=>data[k.slice(pre(active).length)]=lsGet(k));
+  const cur=profiles.find(p=>p.id===active);const blob=new Blob([JSON.stringify({app:"gg-training",v:1,name:cur.name,data},null,1)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`gg-training-${(cur.name||"profil").replace(/[^\wäöüÄÖÜß-]/g,"")}.json`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)};
+$("#impIn").onchange=e=>{const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const j=JSON.parse(r.result);if(j.app!=="gg-training"||!j.data)throw 0;
+  const id=newId();Object.entries(j.data).forEach(([k,v])=>{if(typeof v==="string")lsSet(pre(id)+k,v)});profiles.push({id,name:(j.name||"Importiert").slice(0,30)});active=id;saveProfiles();location.reload()}catch(err){alert("Diese Datei ist keine gültige Sicherung.")}};r.readAsText(file)};
+$("#resetAll").onclick=()=>{if(!confirm("Fortschritt dieses Profils löschen? Name und KA-Datum bleiben."))return;lsKeys().filter(k=>k.startsWith(pre(active))&&!/:(name|kadate)$/.test(k)).forEach(k=>lsSet(k,null));location.reload()};
+
+/* ===== Podcast/Video: Position merken ===== */
+const fmt=t=>`${Math.floor(t/60)}:${String(Math.floor(t%60)).padStart(2,"0")}`;
+function resumeMedia(id,key){const el=$("#"+id);const pk="pos-"+key;const lab=document.createElement("p");lab.className="resume";el.insertAdjacentElement("afterend",lab);
+  let restored=false,last=0;
+  const restore=()=>{if(restored||!el.duration)return;restored=true;const t=store.get(pk,0);if(t>5&&t<el.duration-5){try{el.currentTime=t}catch(e){}lab.textContent=`▶ Weiter bei ${fmt(t)} von ${fmt(el.duration)}`}};
+  el.addEventListener("loadedmetadata",restore);if(el.readyState>=1)restore();
+  const save=()=>{if(restored&&el.currentTime>0)store.set(pk,el.ended?0:el.currentTime)};
+  el.addEventListener("timeupdate",()=>{if(Math.abs(el.currentTime-last)>=3){last=el.currentTime;save();lab.textContent=el.currentTime>5?`Gespeichert bei ${fmt(el.currentTime)}`:""}});
+  el.addEventListener("pause",save);el.addEventListener("seeked",save);el.addEventListener("ended",()=>{store.set(pk,0);lab.textContent="✓ Bis zum Ende gehört"});
+  window.addEventListener("pagehide",save);document.addEventListener("visibilitychange",()=>{if(document.hidden)save()})}
+resumeMedia("aud","aud");resumeMedia("vid","vid");
+{const r=store.get("rate",1);$("#aud").playbackRate=r;$("#aud").addEventListener("loadedmetadata",()=>{$("#aud").playbackRate=store.get("rate",1)});$("#speed").querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",+x.dataset.r===r))}
+$("#speed").addEventListener("click",e=>{const b=e.target.closest(".chip");if(b)store.set("rate",+b.dataset.r)});
+
+/* ===== Letzte Ansicht merken ===== */
+window.addEventListener("hashchange",()=>{const v=location.hash.slice(1);if(VIEWS.includes(v))store.set("view",v)});
+if(!location.hash){const lv=store.get("view","");if(lv&&VIEWS.includes(lv))history.replaceState(null,"","#"+lv)}
+renderProfiles();
+buildTopics();kBuild();pRender();refresh();route();
+document.documentElement.classList.add("js");
+document.documentElement.classList.add("js");
+</script>
+</body>
+</html>
