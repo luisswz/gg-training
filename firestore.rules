@@ -1,12 +1,12 @@
 rules_version = '2';
-// GG-Training: Fortschritt per Lerncode, ohne Login.
-// Wer einen Lerncode kennt, darf genau dieses eine Dokument lesen und schreiben.
-// Auflisten, Löschen und alles andere ist verboten.
+// GG-Training: Fortschritt pro Konto (Firebase Authentication, E-Mail + Passwort).
+// Jedes Konto darf nur sein eigenes Dokument users/{uid} lesen, schreiben und löschen.
+// Auflisten und alles andere ist verboten.
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /sync/{code} {
-      function validCode() {
-        return code.matches('^[A-HJ-NP-Z2-9]{12}$');
+    match /users/{uid} {
+      function isOwner() {
+        return request.auth != null && request.auth.uid == uid;
       }
       function validData() {
         let d = request.resource.data;
@@ -15,9 +15,9 @@ service cloud.firestore {
           && d.t is int && d.t > 1700000000000 && d.t < 4100000000000
           && d.v == 1;
       }
-      allow get: if validCode();
-      allow create, update: if validCode() && validData();
-      allow list, delete: if false;
+      allow get, delete: if isOwner();
+      allow create, update: if isOwner() && validData();
+      allow list: if false;
     }
     match /{document=**} {
       allow read, write: if false;

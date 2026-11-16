@@ -209,17 +209,26 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:34px}
 .plist{display:grid;gap:6px;margin:8px 0 12px}
 .prow{display:flex;align-items:center;gap:8px;background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:6px 6px 6px 12px}
 .prow.on{border-color:var(--navy)}
-.syncbox{margin-top:12px;background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:12px}
-.syncbox .scode{font:700 1.25rem/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.06em;margin:4px 0 2px;color:var(--ink);user-select:all;word-break:break-all}
-.syncbox .sst{margin:0 0 8px;color:var(--muted)}
-.syncbox .sst.ok{color:var(--ok)}
-.syncbox .sst.off{color:var(--mid)}
+.authbox{margin-top:12px;background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:12px}
+.authf{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.authf label{max-width:340px}
+.linkbtn{background:none;border:0;padding:4px 0;color:var(--navy);text-decoration:underline;text-underline-offset:2px;cursor:pointer;font:inherit;align-self:flex-start}
+.amsg{margin:8px 0 0;color:var(--bad)}
+.amsg.ok{color:var(--ok)}
+.amsg:empty{display:none}
+.sst{margin:2px 0 10px;color:var(--muted)}
+.sst.ok{color:var(--ok)}
+.sst.off{color:var(--mid)}
+.dsh{margin-top:12px;color:var(--muted)}
+.dsh summary{cursor:pointer;color:var(--ink)}
+.dsh p{margin:6px 0}
+.dsh a{color:var(--navy)}
 .prow .pn{flex:1;background:none;border:0;color:var(--ink);text-align:left;cursor:pointer;padding:4px 0;font-weight:700}
 .prow .pn small{display:block;font-weight:400;color:var(--muted)}
 .prow .x{background:none;border:0;color:var(--muted);cursor:pointer;font-size:1.1rem;padding:4px 8px;border-radius:8px}
 .profpanel .f{display:flex;gap:10px;flex-wrap:wrap}
 .profpanel label{display:flex;flex-direction:column;gap:3px}
-.profpanel input[type=text],.profpanel input:not([type]),.profpanel input[type=date]{font:inherit;font-size:.92rem;padding:7px 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--sheet);color:var(--ink)}
+.profpanel input[type=text],.profpanel input:not([type]),.profpanel input[type=date],.profpanel input[type=email],.profpanel input[type=password]{font:inherit;font-size:.92rem;padding:7px 10px;border-radius:10px;border:1.5px solid var(--line);background:var(--sheet);color:var(--ink)}
 .resume{font-size:.88rem;color:var(--navy);font-weight:700;margin:8px 0 0}
 </style>
 </head>
@@ -308,17 +317,34 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:34px}
         <p class="verdict" id="verdict"></p>
         <div class="profbar"><button class="chip" id="profBtn" aria-expanded="false">👤 <span id="profName"></span> ▾</button></div>
         <div class="profpanel" id="profPanel" hidden>
-          <b class="small">Profile auf diesem Gerät</b>
-          <div class="plist" id="plist"></div>
           <div class="f"><label class="small">Name<input id="pname" placeholder="Dein Vorname" maxlength="30"></label><label class="small">Kurzarbeit am<input id="pdate" type="date"></label></div>
-          <div class="row" style="margin-top:10px"><button class="btn sm" id="profNew">+ Neues Profil</button><button class="btn sm ghost" id="expBtn">Sicherung speichern</button><label class="btn sm ghost">Sicherung laden<input type="file" id="impIn" accept=".json,application/json" hidden></label></div>
-          <div class="syncbox" id="syncBox" hidden>
-            <b class="small">Dein Lerncode</b>
-            <div class="scode" id="syncCode"></div>
-            <p class="small sst" id="syncSt" aria-live="polite"></p>
-            <div class="row"><button class="btn sm ghost" id="syncCopy">Code kopieren</button><button class="btn sm ghost" id="syncShare">Link fürs andere Gerät</button><button class="btn sm ghost" id="syncEnter">Code eingeben</button></div>
+          <div class="authbox" id="authOut">
+            <b>Anmelden</b>
+            <p class="muted small" style="margin:2px 0 0">Mit Konto ist dein Fortschritt auf all deinen Geräten da.</p>
+            <form id="authForm" class="authf" novalidate>
+              <label class="small">E-Mail<input id="aEmail" type="email" autocomplete="username" inputmode="email" autocapitalize="off" spellcheck="false"></label>
+              <label class="small">Passwort<input id="aPass" type="password" autocomplete="current-password"></label>
+              <div class="row"><button class="btn sm" type="submit" id="aLogin">Anmelden</button><button class="btn sm ghost" type="button" id="aSignup">Konto erstellen</button></div>
+              <button class="linkbtn small" type="button" id="aReset">Passwort vergessen?</button>
+            </form>
+            <p class="small amsg" id="aMsg" aria-live="polite"></p>
+            <p class="muted small" style="margin:8px 0 0">Ohne Anmeldung geht's auch, dann bleibt dein Fortschritt nur auf diesem Gerät.</p>
           </div>
-          <p class="muted small" style="margin:10px 0 0" id="syncNote">Alles bleibt nur in diesem Browser auf diesem Gerät. Mit „Sicherung speichern“ nimmst du deinen Stand aufs nächste Gerät mit.</p>
+          <div class="authbox" id="authIn" hidden>
+            <p class="small" style="margin:0">Angemeldet als <b id="aWho"></b></p>
+            <p class="small sst" id="syncSt" aria-live="polite"></p>
+            <div class="row"><button class="btn sm ghost" type="button" id="aLogout">Abmelden</button><button class="linkbtn small" type="button" id="aDelete">Konto löschen</button></div>
+          </div>
+          <details class="dsh small">
+            <summary>Datenschutz</summary>
+            <p><b>Ohne Konto</b> bleibt alles nur in deinem Browser auf diesem Gerät. Es wird nichts übertragen.</p>
+            <p><b>Mit Konto</b> werden gespeichert: deine E-Mail-Adresse, dein Passwort (nur verschlüsselt, niemand kann es lesen), dein Lernfortschritt sowie Name und Datum der Kurzarbeit, falls du sie einträgst.</p>
+            <p><b>Wo:</b> bei Google Firebase. Die Anmeldung läuft über Firebase Authentication, der Fortschritt liegt in Cloud Firestore im Rechenzentrum Frankfurt. Google kann Daten dabei auch außerhalb der EU verarbeiten.</p>
+            <p><b>Wozu:</b> nur damit dein Fortschritt auf mehreren Geräten da ist (Art. 6 Abs. 1 lit. b DSGVO). Keine Werbung, kein Tracking, keine Weitergabe.</p>
+            <p><b>Löschen:</b> „Konto löschen“ entfernt dein Konto und deinen gespeicherten Fortschritt sofort.</p>
+            <p>Die Schriftarten kommen von Google Fonts, dabei sieht Google deine IP-Adresse.</p>
+            <p><b>Betreiber:</b> privates Schulprojekt, Kontakt über GitHub: <a href="https://github.com/luisswz" rel="noopener">github.com/luisswz</a></p>
+          </details>
         </div>
       </div>
     </div>
@@ -829,85 +855,108 @@ function wireMedia(id,box,key){const el=$("#"+id);const srcs=[...el.querySelecto
 $("#speed").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;$("#aud").playbackRate=+b.dataset.r;$("#speed").querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x===b))};
 wireMedia("aud","m-audio","aud");wireMedia("vid","m-video","vid");persona();
 
-/* ===== Profile-UI ===== */
+/* ===== Profil-UI: Name, Datum der Kurzarbeit, Anmeldung ===== */
+var SYNC_ON=false,AUTH=null;
 function pctOf(id){try{const v=lsGet(pre(id)+"lastReady");return v?JSON.parse(v):null}catch(e){return null}}
-function renderProfiles(){const cur=profiles.find(p=>p.id===active);$("#profName").textContent=cur.name||"Profil";
-  $("#plist").innerHTML=profiles.map(p=>{const r=pctOf(p.id);return `<div class="prow${p.id===active?" on":""}"><button class="pn" data-sw="${p.id}">${esc(p.name||"Ohne Namen")}<small>${p.id===active?"aktiv":"wechseln"}${r!=null?`, ${r} % bereit`:""}</small></button><button class="x" data-del="${p.id}" aria-label="Profil löschen">✕</button></div>`}).join("")}
+function renderProfiles(){const cur=profiles.find(p=>p.id===active);$("#profName").textContent=(cur&&cur.name)||(AUTH?"Konto":"Anmelden")}
 $("#profBtn").onclick=()=>{const p=$("#profPanel");p.hidden=!p.hidden;$("#profBtn").setAttribute("aria-expanded",!p.hidden);renderProfiles()};
-$("#plist").onclick=e=>{const sw=e.target.closest("[data-sw]"),del=e.target.closest("[data-del]");
-  if(sw&&sw.dataset.sw!==active){active=sw.dataset.sw;saveProfiles();location.reload()}
-  if(del){const p=profiles.find(x=>x.id===del.dataset.del);if(!confirm(`Profil „${p.name||"Ohne Namen"}“ und seinen Fortschritt löschen?`))return;
-    lsKeys().filter(k=>k.startsWith(pre(p.id))).forEach(k=>lsSet(k,null));profiles=profiles.filter(x=>x.id!==p.id);
-    if(!profiles.length)profiles=[{id:newId(),name:""}];if(p.id===active){active=profiles[0].id;saveProfiles();location.reload()}else{saveProfiles();renderProfiles()}}};
-$("#profNew").onclick=()=>{const n=prompt("Name für das neue Profil:","");if(n===null)return;const id=newId();profiles.push({id,name:n.trim().slice(0,30)});active=id;saveProfiles();lsSet(pre(id)+"name",JSON.stringify(n.trim().slice(0,30)));location.reload()};
 $("#pname").oninput=e=>{const v=e.target.value.trim();store.set("name",v);const c=profiles.find(p=>p.id===active);c.name=v;saveProfiles();persona();renderProfiles()};
-$("#expBtn").onclick=()=>{const data={};lsKeys().filter(k=>k.startsWith(pre(active))).forEach(k=>data[k.slice(pre(active).length)]=lsGet(k));
-  const cur=profiles.find(p=>p.id===active);const blob=new Blob([JSON.stringify({app:"gg-training",v:1,name:cur.name,data},null,1)],{type:"application/json"});
-  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`gg-training-${(cur.name||"profil").replace(/[^\wäöüÄÖÜß-]/g,"")}.json`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)};
-$("#impIn").onchange=e=>{const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const j=JSON.parse(r.result);if(j.app!=="gg-training"||!j.data)throw 0;
-  const id=newId();Object.entries(j.data).forEach(([k,v])=>{if(typeof v==="string")lsSet(pre(id)+k,v)});profiles.push({id,name:(j.name||"Importiert").slice(0,30)});active=id;saveProfiles();location.reload()}catch(err){alert("Diese Datei ist keine gültige Sicherung.")}};r.readAsText(file)};
-$("#resetAll").onclick=()=>{if(!confirm("Fortschritt dieses Profils löschen? Name und KA-Datum bleiben."))return;lsKeys().filter(k=>k.startsWith(pre(active))&&!/:(name|kadate|_\w+)$/.test(k)).forEach(k=>lsSet(k,null));location.reload()};
+$("#resetAll").onclick=()=>{if(!confirm("Gesamten Fortschritt löschen? Name und Datum der Kurzarbeit bleiben."))return;lsKeys().filter(k=>k.startsWith(pre(active))&&!/:(name|kadate|_\w+)$/.test(k)).forEach(k=>lsSet(k,null));location.reload()};
 
-/* ===== Lerncode: Fortschritt online abgleichen (Firebase Firestore, ohne Login, ohne Namen) ===== */
-var SYNC_ON=false;
-const FB={project:"gg-training-xaln6",key:"AIzaSyB9i9xqgP-RSrtgFZiCcn2-CyN1dlVQ3PY"}; /* öffentlicher Web-Schlüssel, Schutz über firestore.rules */
-const SC_AB="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-const SC_NOSEND=new Set(["name","view"]);          /* bleibt nur auf dem Gerät */
-const SC_NOBUMP=new Set(["name","view","lastReady"]); /* zählt nicht als neuer Fortschritt */
-const scNew=()=>{const a=new Uint32Array(12);crypto.getRandomValues(a);return Array.from(a,x=>SC_AB[x%32]).join("")};
-const scNorm=s=>String(s||"").toUpperCase().replace(/[\s-]/g,"");
-const scOk=c=>/^[A-HJ-NP-Z2-9]{12}$/.test(c);
-const scFmt=c=>c.replace(/(.{4})(?=.)/g,"$1-");
-const scL=(k,id)=>lsGet(pre(id||active)+k);
-let scApplying=false,scTimer=null;
+/* ===== Konto (Firebase Authentication) + Fortschritt online (Cloud Firestore, Frankfurt) ===== */
+/* Ohne SDK, nur REST. Der Web-Schlüssel ist öffentlich, geschützt wird über firestore.rules. */
+const FB={project:"gg-training-xaln6",key:"AIzaSyB9i9xqgP-RSrtgFZiCcn2-CyN1dlVQ3PY"};
+const AK=P0+"auth";
+try{AUTH=JSON.parse(lsGet(AK)||"null")}catch(e){AUTH=null}
+const SC_NOSEND=new Set(["view"]);                    /* bleibt nur auf dem Gerät */
+const SC_NOBUMP=new Set(["view","lastReady"]);        /* zählt nicht als neuer Fortschritt */
+const scL=k=>lsGet(pre(active)+k);
+let scApplying=false,scTimer=null,scPulling=false,tokP=null;
 function scPayload(id){const d={};lsKeys().filter(k=>k.startsWith(pre(id))).forEach(k=>{const s=k.slice(pre(id).length);if(s[0]!=="_"&&!SC_NOSEND.has(s))d[s]=lsGet(k)});return d}
-function scHasProgress(id){return Object.keys(scPayload(id)).some(k=>!["lastReady","kadate","rate"].includes(k))}
-function scUrl(c){return `https://firestore.googleapis.com/v1/projects/${FB.project}/databases/(default)/documents/sync/${c}?key=${FB.key}`}
-async function scFetch(c){const r=await fetch(scUrl(c),{cache:"no-store"});if(r.status===404)return null;if(!r.ok)throw new Error(r.status);
-  const j=await r.json();return{t:+j.fields.t.integerValue,d:JSON.parse(j.fields.d.stringValue)}}
-function scShow(st){const el=$("#syncSt");if(!el)return;const txt={ok:"✓ Online gespeichert",wait:"Wird gespeichert …",off:"Gerade offline, wird später abgeglichen",new:"Wird online gespeichert, sobald du loslegst",load:"Wird abgeglichen …"};
+function scHasProgress(id){return Object.keys(scPayload(id)).some(k=>!["lastReady","kadate","rate","name"].includes(k))}
+function scShow(st){const el=$("#syncSt");if(!el)return;const txt={ok:"✓ Fortschritt gespeichert",wait:"Wird gespeichert …",off:"Gerade offline, wird später gespeichert",load:"Wird geladen …"};
   el.textContent=txt[st]||"";el.className="small sst "+st}
-function scPush(keep){const c=scL("_code"),t=+(scL("_t")||0);if(!SYNC_ON||!c||!t||t<=+(scL("_pushed")||0))return Promise.resolve();
+function aMsg(t,ok){const el=$("#aMsg");el.textContent=t||"";el.className="small amsg"+(ok?" ok":"")}
+function authErr(e){const m=String((e&&e.message)||e);
+  if(/EMAIL_EXISTS/.test(m))return "Zu dieser E-Mail gibt es schon ein Konto. Melde dich einfach an.";
+  if(/INVALID_LOGIN_CREDENTIALS|INVALID_PASSWORD|EMAIL_NOT_FOUND/.test(m))return "E-Mail oder Passwort stimmt nicht.";
+  if(/WEAK_PASSWORD/.test(m))return "Das Passwort braucht mindestens 6 Zeichen.";
+  if(/INVALID_EMAIL|MISSING_EMAIL/.test(m))return "Bitte eine gültige E-Mail-Adresse eingeben.";
+  if(/MISSING_PASSWORD/.test(m))return "Bitte ein Passwort eingeben.";
+  if(/TOO_MANY_ATTEMPTS/.test(m))return "Zu viele Versuche. Warte kurz und versuch es dann noch einmal.";
+  if(/USER_DISABLED/.test(m))return "Dieses Konto ist gesperrt.";
+  if(/CREDENTIAL_TOO_OLD|REQUIRES_RECENT_LOGIN/.test(m))return "Aus Sicherheitsgründen bitte einmal ab- und wieder anmelden und es dann noch einmal versuchen.";
+  if(/fetch|NetworkError|Load failed|network/i.test(m))return "Keine Verbindung. Bist du online?";
+  return "Hat nicht geklappt ("+m+")."}
+async function authCall(ep,body){const r=await fetch("https://identitytoolkit.googleapis.com/v1/accounts:"+ep+"?key="+FB.key,{method:"POST",headers:{"Content-Type":"application/json","X-Firebase-Locale":"de"},body:JSON.stringify(body)});
+  const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error((j.error&&j.error.message)||("HTTP "+r.status));return j}
+function authSave(j){AUTH={uid:j.localId||j.user_id,email:j.email||(AUTH&&AUTH.email)||"",id:j.idToken||j.id_token,rt:j.refreshToken||j.refresh_token,
+  exp:Date.now()+((+(j.expiresIn||j.expires_in)||3600)-120)*1000};lsSet(AK,JSON.stringify(AUTH))}
+function authForget(){AUTH=null;SYNC_ON=false;lsSet(AK,null)}
+async function authToken(){if(!AUTH)throw new Error("NOAUTH");if(AUTH.id&&Date.now()<AUTH.exp)return AUTH.id;
+  if(!tokP)tokP=(async()=>{const r=await fetch("https://securetoken.googleapis.com/v1/token?key="+FB.key,{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:"grant_type=refresh_token&refresh_token="+encodeURIComponent(AUTH.rt)});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok){const m=(j.error&&j.error.message)||("HTTP "+r.status);
+      if(/TOKEN_EXPIRED|USER_DISABLED|USER_NOT_FOUND|INVALID_REFRESH_TOKEN/.test(m)){authForget();renderAuth();aMsg("Bitte melde dich neu an.")}
+      throw new Error(m)}
+    authSave(j);return AUTH.id})().finally(()=>{tokP=null});
+  return tokP}
+function docUrl(){return `https://firestore.googleapis.com/v1/projects/${FB.project}/databases/(default)/documents/users/${AUTH.uid}?key=${FB.key}`}
+async function fsReq(method,body,keep){const tok=await authToken();const h={"Authorization":"Bearer "+tok};if(body)h["Content-Type"]="application/json";
+  return fetch(docUrl(),{method,headers:h,body,cache:"no-store",keepalive:!!keep&&!!body&&body.length<60000})}
+async function scFetch(){const r=await fsReq("GET");if(r.status===404)return null;if(!r.ok)throw new Error("HTTP "+r.status);
+  const j=await r.json();return{t:+j.fields.t.integerValue,d:JSON.parse(j.fields.d.stringValue)}}
+function scPush(keep){if(!SYNC_ON||!AUTH)return Promise.resolve();const t=+(scL("_t")||0);if(!t||t<=+(scL("_pushed")||0))return Promise.resolve();
   const body=JSON.stringify({fields:{d:{stringValue:JSON.stringify(scPayload(active))},t:{integerValue:String(t)},v:{integerValue:"1"}}});
-  return fetch(scUrl(c),{method:"PATCH",headers:{"Content-Type":"application/json"},body,keepalive:!!keep&&body.length<60000})
-    .then(r=>{if(!r.ok)throw new Error(r.status);lsSet(pre(active)+"_pushed",String(t));scShow("ok")}).catch(()=>scShow("off"))}
+  return fsReq("PATCH",body,keep).then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);lsSet(pre(active)+"_pushed",String(t));scShow("ok")}).catch(()=>scShow("off"))}
 function syncTouch(k){if(!SYNC_ON||scApplying||!k.startsWith(pre(active)))return;const s=k.slice(pre(active).length);if(s[0]==="_"||SC_NOBUMP.has(s))return;
   lsSet(pre(active)+"_t",String(Date.now()));clearTimeout(scTimer);scTimer=setTimeout(()=>scPush(),2500);scShow("wait")}
-function scApply(id,rem,code){scApplying=true;
-  lsKeys().filter(k=>k.startsWith(pre(id))).forEach(k=>{const s=k.slice(pre(id).length);if(s[0]!=="_"&&!SC_NOSEND.has(s))lsSet(k,null)});
-  Object.entries(rem.d||{}).forEach(([k,v])=>{if(typeof v==="string"&&k[0]!=="_"&&!SC_NOSEND.has(k))lsSet(pre(id)+k,v)});
-  lsSet(pre(id)+"_code",code);lsSet(pre(id)+"_t",String(rem.t));lsSet(pre(id)+"_pushed",String(rem.t));scApplying=false}
-let scPulling=false;
-async function scPull(){const c=scL("_code");if(!SYNC_ON||!c||scPulling)return;if(!+(scL("_t")||0)){scShow("new");return}scPulling=true;
-  try{const rem=await scFetch(c);const t=+(scL("_t")||0);
-    if(rem&&rem.t>t){scApply(active,rem,c);location.reload();return}
-    if(t&&(!rem||t>rem.t)){lsSet(pre(active)+"_pushed","0");await scPush()}else scShow(t?"ok":"new")}
-  catch(e){scShow("off")}finally{scPulling=false}}
-async function scJoin(raw){const c=scNorm(raw);
-  if(!scOk(c)){alert("Das ist kein gültiger Lerncode. Er hat 12 Zeichen, zum Beispiel ABCD-EFGH-JKMN.");return}
-  if(c===scL("_code")){alert("Das ist schon der Lerncode dieses Profils.");return}
-  const own=profiles.find(p=>scL("_code",p.id)===c);if(own){active=own.id;saveProfiles();location.reload();return}
-  scShow("load");let rem;
-  try{rem=await scFetch(c)}catch(e){scShow("off");alert("Gerade keine Verbindung. Versuch es gleich noch einmal.");return}
-  if(!rem){scShow(scL("_t")?"ok":"new");alert("Zu diesem Lerncode ist noch nichts gespeichert. Tippfehler?");return}
-  let id=active;if(scHasProgress(active)){id=newId();profiles.push({id,name:""})}
-  scApply(id,rem,c);active=id;saveProfiles();location.reload()}
-async function scCopy(text,msg){try{await navigator.clipboard.writeText(text);alert(msg)}catch(e){prompt("Zum Kopieren markieren:",text)}}
-function scInit(){if(!FB.project||FB.project.startsWith("__")||!window.fetch)return;
-  if(!scOk(scL("_code")||"")){lsSet(pre(active)+"_code",scNew());if(scHasProgress(active))lsSet(pre(active)+"_t",String(Date.now()))}
-  SYNC_ON=true;const code=scL("_code");
-  $("#syncBox").hidden=false;$("#syncCode").textContent=scFmt(code);
-  $("#syncNote").textContent="Dein Fortschritt wird mit diesem Lerncode online gespeichert, ohne deinen Namen. Auf einem anderen Gerät einfach „Code eingeben“ oder den Link öffnen. Wer den Code kennt, sieht und ändert deinen Stand: also nur selbst benutzen.";
-  const link=()=>location.origin+location.pathname+"?code="+scFmt(scL("_code"));
-  $("#syncCopy").onclick=()=>scCopy(scFmt(scL("_code")),"Lerncode kopiert.");
-  $("#syncShare").onclick=async()=>{const url=link();if(navigator.share){try{await navigator.share({title:"Mein GG-Training",url});return}catch(e){if(e&&e.name==="AbortError")return}}scCopy(url,"Link kopiert. Öffne ihn auf deinem anderen Gerät.")};
-  $("#syncEnter").onclick=()=>{const v=prompt("Lerncode von deinem anderen Gerät:","");if(v)scJoin(v)};
-  const q=new URLSearchParams(location.search).get("code");
-  if(q){history.replaceState(null,"",location.pathname+location.hash);if(scNorm(q)!==code){scJoin(q);return}}
-  scShow(scL("_t")?"load":"new");scPull();
+function scClearLocal(all){scApplying=true;lsKeys().filter(k=>k.startsWith(pre(active))).forEach(k=>{const s=k.slice(pre(active).length);if(all||(s[0]!=="_"&&!SC_NOSEND.has(s)))lsSet(k,null)});scApplying=false}
+function scApply(rem){scClearLocal(false);scApplying=true;
+  Object.entries(rem.d||{}).forEach(([k,v])=>{if(typeof v==="string"&&k[0]!=="_"&&!SC_NOSEND.has(k))lsSet(pre(active)+k,v)});
+  lsSet(pre(active)+"_t",String(rem.t));lsSet(pre(active)+"_pushed",String(rem.t));
+  let nm="";try{nm=JSON.parse((rem.d&&rem.d.name)||'""')||""}catch(e){}const c=profiles.find(p=>p.id===active);if(c){c.name=nm;saveProfiles()}
+  scApplying=false}
+async function scPull(){if(!SYNC_ON||!AUTH||scPulling)return;scPulling=true;
+  try{const rem=await scFetch();const t=+(scL("_t")||0);
+    if(rem&&rem.t>t){scApply(rem);location.reload();return}
+    if(t&&(!rem||t>rem.t)){lsSet(pre(active)+"_pushed","0");await scPush()}else scShow("ok")}
+  catch(e){if(AUTH)scShow("off")}finally{scPulling=false}}
+async function afterLogin(j){authSave(j);let rem;
+  try{rem=await scFetch()}catch(e){authForget();throw e}
+  if(rem){if(scHasProgress(active)&&!confirm("Dein Konto hat schon einen gespeicherten Fortschritt. Jetzt laden?\n\nWas du auf diesem Gerät ohne Anmeldung gelernt hast, wird dabei ersetzt."))
+      {authForget();aMsg("Nicht angemeldet.");return}
+    scApply(rem)}
+  else if(scHasProgress(active)||scL("name")||scL("kadate")){SYNC_ON=true;lsSet(pre(active)+"_t",String(Date.now()));lsSet(pre(active)+"_pushed","0");await scPush()}
+  location.reload()}
+function setBusy(b){["aLogin","aSignup","aReset"].forEach(id=>{$("#"+id).disabled=b})}
+async function authDo(kind){const email=$("#aEmail").value.trim(),pw=$("#aPass").value;
+  if(!email){aMsg("Bitte deine E-Mail-Adresse eingeben.");return}
+  if(kind!=="reset"&&!pw){aMsg("Bitte ein Passwort eingeben.");return}
+  if(kind==="signUp"&&pw.length<6){aMsg("Das Passwort braucht mindestens 6 Zeichen.");return}
+  setBusy(true);aMsg(kind==="reset"?"Wird gesendet …":"Einen Moment …",true);
+  try{if(kind==="reset"){await authCall("sendOobCode",{requestType:"PASSWORD_RESET",email});aMsg("Falls es zu dieser Adresse ein Konto gibt, kommt gleich eine Mail zum Zurücksetzen. Schau auch im Spam-Ordner nach.",true)}
+    else await afterLogin(await authCall(kind,{email,password:pw,returnSecureToken:true}))}
+  catch(e){aMsg(authErr(e))}finally{setBusy(false)}}
+async function authLogout(){scShow("wait");clearTimeout(scTimer);try{await scPush()}catch(e){}
+  scClearLocal(true);authForget();const c=profiles.find(p=>p.id===active);if(c){c.name="";saveProfiles()}location.reload()}
+async function authDelete(){if(!confirm("Konto und gespeicherten Fortschritt endgültig löschen?\n\nDas kann nicht rückgängig gemacht werden."))return;
+  try{const tok=await authToken();await authCall("delete",{idToken:tok});
+    const r=await fsReq("DELETE");if(!r.ok&&r.status!==404)throw new Error("HTTP "+r.status)}
+  catch(e){alert("Löschen hat nicht geklappt: "+authErr(e));return}
+  scClearLocal(true);authForget();const c=profiles.find(p=>p.id===active);if(c){c.name="";saveProfiles()}
+  alert("Dein Konto und dein gespeicherter Fortschritt sind gelöscht.");location.reload()}
+function renderAuth(){$("#authOut").hidden=!!AUTH;$("#authIn").hidden=!AUTH;$("#aWho").textContent=AUTH?AUTH.email:"";renderProfiles()}
+function authInit(){
+  lsKeys().filter(k=>/:_code$/.test(k)).forEach(k=>lsSet(k,null)); /* Reste vom früheren Lerncode */
+  $("#authForm").onsubmit=e=>{e.preventDefault();authDo("signInWithPassword")};
+  $("#aSignup").onclick=()=>authDo("signUp");$("#aReset").onclick=()=>authDo("reset");
+  $("#aLogout").onclick=authLogout;$("#aDelete").onclick=authDelete;
+  renderAuth();if(!AUTH||!window.fetch)return;
+  SYNC_ON=true;scShow("load");scPull();
   addEventListener("pagehide",()=>scPush(true));
   document.addEventListener("visibilitychange",()=>{if(document.hidden)scPush(true);else scPull()})}
-scInit();
+authInit();
 
 /* ===== Podcast/Video: Position merken ===== */
 const fmt=t=>`${Math.floor(t/60)}:${String(Math.floor(t%60)).padStart(2,"0")}`;
