@@ -147,7 +147,7 @@ details.more .in{padding:0 14px 12px}
 .media .tag{display:inline-block;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);background:var(--marker-soft);border-radius:999px;padding:3px 10px;margin-bottom:8px}
 .media h3{margin:0 0 6px;font-size:1.25rem}
 .media audio{width:100%;margin-top:10px}
-.media video{width:100%;border-radius:14px;margin-top:10px;background:#000;aspect-ratio:16/9}
+.media video{display:block;max-width:100%;max-height:78vh;margin:10px auto 0;border-radius:14px;background:#000}
 .speed{display:flex;gap:6px;margin-top:10px}
 .missing{display:none;background:var(--paper);border:1.5px dashed var(--line);border-radius:14px;padding:16px;margin-top:10px;text-align:center}
 .media.none audio,.media.none video,.media.none .speed{display:none}
@@ -209,6 +209,11 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:34px}
 .plist{display:grid;gap:6px;margin:8px 0 12px}
 .prow{display:flex;align-items:center;gap:8px;background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:6px 6px 6px 12px}
 .prow.on{border-color:var(--navy)}
+.syncbox{margin-top:12px;background:var(--sheet);border:1.5px solid var(--line);border-radius:12px;padding:12px}
+.syncbox .scode{font:700 1.25rem/1.3 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:.06em;margin:4px 0 2px;color:var(--ink);user-select:all;word-break:break-all}
+.syncbox .sst{margin:0 0 8px;color:var(--muted)}
+.syncbox .sst.ok{color:var(--ok)}
+.syncbox .sst.off{color:var(--mid)}
 .prow .pn{flex:1;background:none;border:0;color:var(--ink);text-align:left;cursor:pointer;padding:4px 0;font-weight:700}
 .prow .pn small{display:block;font-weight:400;color:var(--muted)}
 .prow .x{background:none;border:0;color:var(--muted);cursor:pointer;font-size:1.1rem;padding:4px 8px;border-radius:8px}
@@ -307,7 +312,13 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:34px}
           <div class="plist" id="plist"></div>
           <div class="f"><label class="small">Name<input id="pname" placeholder="Dein Vorname" maxlength="30"></label><label class="small">Kurzarbeit am<input id="pdate" type="date"></label></div>
           <div class="row" style="margin-top:10px"><button class="btn sm" id="profNew">+ Neues Profil</button><button class="btn sm ghost" id="expBtn">Sicherung speichern</button><label class="btn sm ghost">Sicherung laden<input type="file" id="impIn" accept=".json,application/json" hidden></label></div>
-          <p class="muted small" style="margin:10px 0 0">Alles bleibt nur in diesem Browser auf diesem Gerät. Mit „Sicherung speichern“ nimmst du deinen Stand aufs nächste Gerät mit.</p>
+          <div class="syncbox" id="syncBox" hidden>
+            <b class="small">Dein Lerncode</b>
+            <div class="scode" id="syncCode"></div>
+            <p class="small sst" id="syncSt" aria-live="polite"></p>
+            <div class="row"><button class="btn sm ghost" id="syncCopy">Code kopieren</button><button class="btn sm ghost" id="syncShare">Link fürs andere Gerät</button><button class="btn sm ghost" id="syncEnter">Code eingeben</button></div>
+          </div>
+          <p class="muted small" style="margin:10px 0 0" id="syncNote">Alles bleibt nur in diesem Browser auf diesem Gerät. Mit „Sicherung speichern“ nimmst du deinen Stand aufs nächste Gerät mit.</p>
         </div>
       </div>
     </div>
@@ -400,7 +411,7 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:34px}
 /* ===== Profile & dauerhafter Speicher (nur auf diesem Gerät) ===== */
 const P0="pug26:";
 function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
-function lsSet(k,v){try{if(v==null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){}}
+function lsSet(k,v){try{const o=localStorage.getItem(k);if(v==null)localStorage.removeItem(k);else localStorage.setItem(k,v);if(o!==(v==null?null:String(v)))syncTouch(k)}catch(e){}}
 function lsKeys(){const a=[];try{for(let i=0;i<localStorage.length;i++)a.push(localStorage.key(i))}catch(e){}return a}
 let profiles=[];try{profiles=JSON.parse(lsGet(P0+"profiles")||"[]")||[]}catch(e){profiles=[]}
 let active=lsGet(P0+"active");
@@ -835,7 +846,68 @@ $("#expBtn").onclick=()=>{const data={};lsKeys().filter(k=>k.startsWith(pre(acti
   const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`gg-training-${(cur.name||"profil").replace(/[^\wäöüÄÖÜß-]/g,"")}.json`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)};
 $("#impIn").onchange=e=>{const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const j=JSON.parse(r.result);if(j.app!=="gg-training"||!j.data)throw 0;
   const id=newId();Object.entries(j.data).forEach(([k,v])=>{if(typeof v==="string")lsSet(pre(id)+k,v)});profiles.push({id,name:(j.name||"Importiert").slice(0,30)});active=id;saveProfiles();location.reload()}catch(err){alert("Diese Datei ist keine gültige Sicherung.")}};r.readAsText(file)};
-$("#resetAll").onclick=()=>{if(!confirm("Fortschritt dieses Profils löschen? Name und KA-Datum bleiben."))return;lsKeys().filter(k=>k.startsWith(pre(active))&&!/:(name|kadate)$/.test(k)).forEach(k=>lsSet(k,null));location.reload()};
+$("#resetAll").onclick=()=>{if(!confirm("Fortschritt dieses Profils löschen? Name und KA-Datum bleiben."))return;lsKeys().filter(k=>k.startsWith(pre(active))&&!/:(name|kadate|_\w+)$/.test(k)).forEach(k=>lsSet(k,null));location.reload()};
+
+/* ===== Lerncode: Fortschritt online abgleichen (Firebase Firestore, ohne Login, ohne Namen) ===== */
+var SYNC_ON=false;
+const FB={project:"gg-training-xaln6",key:"AIzaSyB9i9xqgP-RSrtgFZiCcn2-CyN1dlVQ3PY"}; /* öffentlicher Web-Schlüssel, Schutz über firestore.rules */
+const SC_AB="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const SC_NOSEND=new Set(["name","view"]);          /* bleibt nur auf dem Gerät */
+const SC_NOBUMP=new Set(["name","view","lastReady"]); /* zählt nicht als neuer Fortschritt */
+const scNew=()=>{const a=new Uint32Array(12);crypto.getRandomValues(a);return Array.from(a,x=>SC_AB[x%32]).join("")};
+const scNorm=s=>String(s||"").toUpperCase().replace(/[\s-]/g,"");
+const scOk=c=>/^[A-HJ-NP-Z2-9]{12}$/.test(c);
+const scFmt=c=>c.replace(/(.{4})(?=.)/g,"$1-");
+const scL=(k,id)=>lsGet(pre(id||active)+k);
+let scApplying=false,scTimer=null;
+function scPayload(id){const d={};lsKeys().filter(k=>k.startsWith(pre(id))).forEach(k=>{const s=k.slice(pre(id).length);if(s[0]!=="_"&&!SC_NOSEND.has(s))d[s]=lsGet(k)});return d}
+function scHasProgress(id){return Object.keys(scPayload(id)).some(k=>!["lastReady","kadate","rate"].includes(k))}
+function scUrl(c){return `https://firestore.googleapis.com/v1/projects/${FB.project}/databases/(default)/documents/sync/${c}?key=${FB.key}`}
+async function scFetch(c){const r=await fetch(scUrl(c),{cache:"no-store"});if(r.status===404)return null;if(!r.ok)throw new Error(r.status);
+  const j=await r.json();return{t:+j.fields.t.integerValue,d:JSON.parse(j.fields.d.stringValue)}}
+function scShow(st){const el=$("#syncSt");if(!el)return;const txt={ok:"✓ Online gespeichert",wait:"Wird gespeichert …",off:"Gerade offline, wird später abgeglichen",new:"Wird online gespeichert, sobald du loslegst",load:"Wird abgeglichen …"};
+  el.textContent=txt[st]||"";el.className="small sst "+st}
+function scPush(keep){const c=scL("_code"),t=+(scL("_t")||0);if(!SYNC_ON||!c||!t||t<=+(scL("_pushed")||0))return Promise.resolve();
+  const body=JSON.stringify({fields:{d:{stringValue:JSON.stringify(scPayload(active))},t:{integerValue:String(t)},v:{integerValue:"1"}}});
+  return fetch(scUrl(c),{method:"PATCH",headers:{"Content-Type":"application/json"},body,keepalive:!!keep&&body.length<60000})
+    .then(r=>{if(!r.ok)throw new Error(r.status);lsSet(pre(active)+"_pushed",String(t));scShow("ok")}).catch(()=>scShow("off"))}
+function syncTouch(k){if(!SYNC_ON||scApplying||!k.startsWith(pre(active)))return;const s=k.slice(pre(active).length);if(s[0]==="_"||SC_NOBUMP.has(s))return;
+  lsSet(pre(active)+"_t",String(Date.now()));clearTimeout(scTimer);scTimer=setTimeout(()=>scPush(),2500);scShow("wait")}
+function scApply(id,rem,code){scApplying=true;
+  lsKeys().filter(k=>k.startsWith(pre(id))).forEach(k=>{const s=k.slice(pre(id).length);if(s[0]!=="_"&&!SC_NOSEND.has(s))lsSet(k,null)});
+  Object.entries(rem.d||{}).forEach(([k,v])=>{if(typeof v==="string"&&k[0]!=="_"&&!SC_NOSEND.has(k))lsSet(pre(id)+k,v)});
+  lsSet(pre(id)+"_code",code);lsSet(pre(id)+"_t",String(rem.t));lsSet(pre(id)+"_pushed",String(rem.t));scApplying=false}
+let scPulling=false;
+async function scPull(){const c=scL("_code");if(!SYNC_ON||!c||scPulling)return;scPulling=true;
+  try{const rem=await scFetch(c);const t=+(scL("_t")||0);
+    if(rem&&rem.t>t){scApply(active,rem,c);location.reload();return}
+    if(t&&(!rem||t>rem.t)){lsSet(pre(active)+"_pushed","0");await scPush()}else scShow(t?"ok":"new")}
+  catch(e){scShow("off")}finally{scPulling=false}}
+async function scJoin(raw){const c=scNorm(raw);
+  if(!scOk(c)){alert("Das ist kein gültiger Lerncode. Er hat 12 Zeichen, zum Beispiel ABCD-EFGH-JKMN.");return}
+  if(c===scL("_code")){alert("Das ist schon der Lerncode dieses Profils.");return}
+  const own=profiles.find(p=>scL("_code",p.id)===c);if(own){active=own.id;saveProfiles();location.reload();return}
+  scShow("load");let rem;
+  try{rem=await scFetch(c)}catch(e){scShow("off");alert("Gerade keine Verbindung. Versuch es gleich noch einmal.");return}
+  if(!rem){scShow(scL("_t")?"ok":"new");alert("Zu diesem Lerncode ist noch nichts gespeichert. Tippfehler?");return}
+  let id=active;if(scHasProgress(active)){id=newId();profiles.push({id,name:""})}
+  scApply(id,rem,c);active=id;saveProfiles();location.reload()}
+async function scCopy(text,msg){try{await navigator.clipboard.writeText(text);alert(msg)}catch(e){prompt("Zum Kopieren markieren:",text)}}
+function scInit(){if(!FB.project||FB.project.startsWith("__")||!window.fetch)return;
+  if(!scOk(scL("_code")||"")){lsSet(pre(active)+"_code",scNew());if(scHasProgress(active))lsSet(pre(active)+"_t",String(Date.now()))}
+  SYNC_ON=true;const code=scL("_code");
+  $("#syncBox").hidden=false;$("#syncCode").textContent=scFmt(code);
+  $("#syncNote").textContent="Dein Fortschritt wird mit diesem Lerncode online gespeichert, ohne deinen Namen. Auf einem anderen Gerät einfach „Code eingeben“ oder den Link öffnen. Wer den Code kennt, sieht und ändert deinen Stand: also nur selbst benutzen.";
+  const link=()=>location.origin+location.pathname+"?code="+scFmt(scL("_code"));
+  $("#syncCopy").onclick=()=>scCopy(scFmt(scL("_code")),"Lerncode kopiert.");
+  $("#syncShare").onclick=async()=>{const url=link();if(navigator.share){try{await navigator.share({title:"Mein GG-Training",url});return}catch(e){if(e&&e.name==="AbortError")return}}scCopy(url,"Link kopiert. Öffne ihn auf deinem anderen Gerät.")};
+  $("#syncEnter").onclick=()=>{const v=prompt("Lerncode von deinem anderen Gerät:","");if(v)scJoin(v)};
+  const q=new URLSearchParams(location.search).get("code");
+  if(q){history.replaceState(null,"",location.pathname+location.hash);if(scNorm(q)!==code){scJoin(q);return}}
+  scShow(scL("_t")?"load":"new");scPull();
+  addEventListener("pagehide",()=>scPush(true));
+  document.addEventListener("visibilitychange",()=>{if(document.hidden)scPush(true);else scPull()})}
+scInit();
 
 /* ===== Podcast/Video: Position merken ===== */
 const fmt=t=>`${Math.floor(t/60)}:${String(Math.floor(t%60)).padStart(2,"0")}`;
